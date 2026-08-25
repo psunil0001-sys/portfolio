@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Syne", sans-serif;
+  --font-sans: "DM Sans", sans-serif;
+  --color-ink: #0b0f14;
+  --color-mist: #121820;
+  --color-steel: #18222d;
+  --color-paper: #e8eef4;
+  --color-muted: #8b97a6;
+  --color-line: rgba(232, 238, 244, 0.1);
+  --color-teal: #2ee6c7;
+  --color-teal-dim: rgba(46, 230, 199, 0.12);
+  --color-amber: #f0b429;
+  --color-amber-dim: rgba(240, 180, 41, 0.14);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  letter-spacing: 0.01em;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+::selection {
+  background: var(--color-teal);
+  color: var(--color-ink);
+}
+
+.blueprint {
+  background-color: var(--color-ink);
+  background-image:
+    linear-gradient(180deg, rgba(18, 24, 32, 0.92) 0%, rgba(11, 15, 20, 0.88) 42%, rgba(11, 15, 20, 1) 100%),
+    radial-gradient(1200px 600px at 80% -10%, rgba(46, 230, 199, 0.12), transparent 55%),
+    radial-gradient(900px 500px at 0% 20%, rgba(240, 180, 41, 0.08), transparent 50%),
+    linear-gradient(rgba(46, 230, 199, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 230, 199, 0.055) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    auto,
+    48px 48px,
+    48px 48px;
+  background-attachment: fixed;
+  animation: grid-drift 36s linear infinite;
+}
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+  }
+  to {
+    background-position: 0 0, 0 0, 0 0, 48px 48px, 48px 48px;
+  }
+}
+
+.frame {
+  position: relative;
+}
+
+.frame::before,
+.frame::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--color-teal);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.frame::before {
+  top: 0;
+  left: 0;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.frame::after {
+  top: 0;
+  right: 0;
+  border-width: 1.5px 1.5px 0 0;
+}
+
+.frame-inner::before,
+.frame-inner::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--color-teal);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.frame-inner::before {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1.5px 1.5px;
+}
+
+.frame-inner::after {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+.frame-draw::before,
+.frame-draw::after,
+.frame-draw.frame-inner::before,
+.frame-draw.frame-inner::after {
+  animation: frame-draw 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.frame-draw::after {
+  animation-delay: 0.12s;
+}
+
+.frame-draw.frame-inner::before {
+  animation-delay: 0.2s;
+}
+
+.frame-draw.frame-inner::after {
+  animation-delay: 0.28s;
+}
+
+@keyframes frame-draw {
+  from {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    width: 18px;
+    height: 18px;
+    opacity: 1;
+  }
+}
+
+.skill-chip {
+  border: 1px solid var(--color-line);
+  background: var(--color-mist);
+  transition:
+    border-color 0.22s ease,
+    background-color 0.22s ease,
+    color 0.22s ease;
+}
+
+.skill-chip:hover {
+  border-color: var(--color-teal);
+  background: var(--color-teal-dim);
+  color: var(--color-teal);
+}
+
+.timeline-dot {
+  animation: dot-settle 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes dot-settle {
+  0% {
+    transform: scale(0.4);
+    box-shadow: 0 0 0 0 rgba(46, 230, 199, 0.45);
+  }
+  55% {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 8px rgba(46, 230, 199, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 4px rgba(46, 230, 199, 0.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blueprint {
+    animation: none;
+  }
+
+  .frame-draw::before,
+  .frame-draw::after,
+  .frame-draw.frame-inner::before,
+  .frame-draw.frame-inner::after,
+  .timeline-dot {
+    animation: none;
+  }
+}
