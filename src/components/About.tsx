@@ -1,31 +1,61 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useSite } from '../data/SiteProvider'
+import { easeOutExpo } from '../motion'
+import { Reveal } from './fx/Reveal'
 import { SectionHeading } from './SectionHeading'
 
 export function About() {
   const { profile, spokenLanguages, experience } = useSite()
   const current = experience[0]
+  const reduce = useReducedMotion()
+
   return (
     <section id="about" className="scroll-mt-24 px-5 py-20 sm:px-8 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <SectionHeading index="01 / Profile" title="About">
           Automotive software first. AI tooling now. Same obsession with verification.
         </SectionHeading>
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.35 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="grid gap-10 lg:grid-cols-[1.4fr_0.8fr]"
-        >
-          <p className="max-w-3xl text-base leading-relaxed text-paper/85 sm:text-lg">
-            {profile.summary}
-          </p>
-          <div className="border border-line bg-steel/60 p-6">
+
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_0.8fr]">
+          <Reveal>
+            <p className="max-w-3xl text-base leading-relaxed text-paper/85 sm:text-lg">
+              {profile.summary}
+            </p>
+          </Reveal>
+
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 30, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.75, delay: 0.12, ease: easeOutExpo }}
+            whileHover={reduce ? undefined : { y: -4 }}
+            className="glow-border border border-line bg-steel/60 p-6"
+          >
             <p className="font-display text-[0.7rem] tracking-[0.22em] text-teal uppercase">
               Spoken languages
             </p>
-            <p className="mt-4 text-sm leading-relaxed text-muted">{spokenLanguages.join(' · ')}</p>
+            <motion.ul
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.5 }}
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } } }}
+              className="mt-4 flex flex-wrap gap-2"
+            >
+              {spokenLanguages.map((language) => (
+                <motion.li
+                  key={language}
+                  variants={{
+                    hidden: reduce ? {} : { opacity: 0, y: 8 },
+                    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 340, damping: 24 } },
+                  }}
+                  className="text-sm text-muted"
+                >
+                  {language}
+                  <span className="mx-2 text-teal/50">·</span>
+                </motion.li>
+              ))}
+            </motion.ul>
+
             <p className="mt-6 font-display text-[0.7rem] tracking-[0.22em] text-amber uppercase">
               Currently
             </p>
@@ -34,8 +64,8 @@ export function About() {
                 ? `${current.role} at ${current.company}${current.client ? `, client ${current.client}` : ''}.`
                 : profile.title}
             </p>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   )

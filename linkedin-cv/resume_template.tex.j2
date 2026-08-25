@@ -1,0 +1,115 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={[[ name ]] - Resume},
+    pdfauthor={[[ name ]]}
+}
+
+\titleformat{\section}{\large\bfseries\uppercase}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+
+\pagestyle{empty}
+
+\newcommand{\resumeItem}[1]{\item\small{#1}}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=*,nosep,topsep=0pt}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\LARGE [[ name ]]} \\
+    \vspace{4pt}
+    \small [[ title ]] $|$ [[ headline ]] \\
+    \vspace{4pt}
+    \small [[ location ]] \\
+    \vspace{2pt}
+    \small \href{mailto:[[ email ]]}{[[ email ]]} $|$
+    [[ phone ]] $|$
+    \href{https://[[ linkedin ]]}{LinkedIn: [[ linkedin_handle ]]}
+\end{center}
+
+\section{Professional Summary}
+[[ summary ]]
+
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in]
+[% for group in skill_groups %]
+    \item \textbf{[[ group.label ]]:} [[ group.skills | join(', ') ]]
+[% endfor %]
+    \item \textbf{Languages:} [[ spoken_languages | join(', ') ]]
+\end{itemize}
+
+\section{Professional Experience}
+
+\begin{itemize}[leftmargin=0.15in]
+
+[% for job in experience %]
+\resumeSubheading
+{[[ job.role ]]}{[[ job.period ]]}
+{[[ job.company ]]}{[[ job.location ]]}
+\vspace{4pt}
+\begin{itemize}
+[% if job.client %]
+    \resumeItem{Client: [[ job.client ]]}
+    \vspace{10pt}
+[% endif %]
+[% for bullet in job.bullets %]
+    \resumeItem{[[ bullet ]]}
+[% endfor %]
+\end{itemize}
+\vspace{10pt}
+
+[% endfor %]
+\end{itemize}
+
+[% if projects %]
+\section{Projects}
+\begin{itemize}[leftmargin=0.15in]
+[% for project in projects %]
+\resumeSubheading
+{[[ project.title ]]}{Freelance}
+{[[ project.stack ]]}{\href{[[ project.url ]]}{GitHub}}
+\vspace{4pt}
+\begin{itemize}
+    \resumeItem{[[ project.blurb ]]}
+\end{itemize}
+\vspace{10pt}
+[% endfor %]
+\end{itemize}
+[% endif %]
+
+\section{Education}
+
+\begin{itemize}[leftmargin=0.15in]
+\resumeSubheading
+{[[ education.degree ]]}{[[ education.period ]]}
+{[[ education.school ]]}{[[ education.location ]]}
+
+\end{itemize}
+
+\section{Certifications}
+\begin{itemize}[leftmargin=0.15in]
+[% for cert in certifications %]
+    \item [[ cert ]]
+[% endfor %]
+\end{itemize}
+
+\end{document}

@@ -46,6 +46,11 @@ type LiveFile = {
   projects?: Project[]
 }
 
+/** live.json comes from the LaTeX pipeline, which writes date ranges as `--`. */
+function dash(value: string) {
+  return value.replace(/\s--\s/g, ' – ')
+}
+
 function splitName(name: string) {
   const parts = name.trim().split(/\s+/)
   return {
@@ -89,8 +94,12 @@ function mapLive(live: LiveFile): Partial<SiteData> {
         }))
       : fallbackSkills,
     spokenLanguages: live.spoken_languages ?? fallbackSpoken,
-    experience: live.experience?.length ? live.experience : fallbackExperience,
-    education: live.education ?? fallbackEducation,
+    experience: live.experience?.length
+      ? live.experience.map((role) => ({ ...role, period: dash(role.period) }))
+      : fallbackExperience,
+    education: live.education
+      ? { ...live.education, period: dash(live.education.period) }
+      : fallbackEducation,
     certifications: live.certifications ?? fallbackCerts,
     projects: live.projects?.length ? live.projects : fallbackProjects,
   }

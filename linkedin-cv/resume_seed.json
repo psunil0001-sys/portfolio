@@ -1,7 +1,7 @@
 {
   "name": "Sunilkumar Pathipati",
   "title": "Lead Engineer",
-  "headline": "Python \u00b7 AI \u00b7 Test Frameworks \u00b7 AUTOSAR",
+  "headline": "Python · AI · Test Frameworks · AUTOSAR",
   "location": "Bengaluru, Karnataka, India",
   "email": "psunil0001@gmail.com",
   "phone": "+91-8686877689",
@@ -9,73 +9,14 @@
   "github": "github.com/psunil0001-sys",
   "summary": "Lead Engineer with 9+ years of experience in automotive software engineering, embedded systems, artificial intelligence, and application development. Expertise in Python, C, AUTOSAR, machine learning, and Agile development practices. Experienced in developing safety-critical automotive solutions, including anti-lock braking systems for eBikes and two-wheelers, with strong exposure to ISO 26262 functional safety environments. Skilled in Python-based automation frameworks, local LLM tooling, intelligent testing platforms, software integration, verification and validation, release management, and engineering productivity improvement.",
   "skill_groups": [
-    {
-      "label": "Languages",
-      "skills": [
-        "Python",
-        "C",
-        "Embedded C",
-        "Bash",
-        "MATLAB"
-      ]
-    },
-    {
-      "label": "AI & Machine Learning",
-      "skills": [
-        "Artificial Intelligence",
-        "Machine Learning",
-        "LLMs",
-        "llama.cpp",
-        "Data Analytics"
-      ]
-    },
-    {
-      "label": "Automotive",
-      "skills": [
-        "AUTOSAR",
-        "ISO 26262",
-        "Android Infotainment",
-        "ABS Systems",
-        "Embedded Systems"
-      ]
-    },
-    {
-      "label": "Tools",
-      "skills": [
-        "Git",
-        "GitHub",
-        "GitHub Actions",
-        "JFrog Artifactory",
-        "Linux",
-        "Simulink"
-      ]
-    },
-    {
-      "label": "Core",
-      "skills": [
-        "Test Automation Frameworks",
-        "Software Validation",
-        "System Integration",
-        "Release Management"
-      ]
-    },
-    {
-      "label": "Methods",
-      "skills": [
-        "Agile Development",
-        "CI/CD Workflows",
-        "Software Development Life Cycle",
-        "Verification & Validation"
-      ]
-    }
+    {"label": "Languages", "skills": ["Python", "C", "Embedded C", "Bash", "MATLAB"]},
+    {"label": "AI & Machine Learning", "skills": ["Artificial Intelligence", "Machine Learning", "LLMs", "llama.cpp", "Data Analytics"]},
+    {"label": "Automotive", "skills": ["AUTOSAR", "ISO 26262", "Android Infotainment", "ABS Systems", "Embedded Systems"]},
+    {"label": "Tools", "skills": ["Git", "GitHub", "GitHub Actions", "JFrog Artifactory", "Linux", "Simulink"]},
+    {"label": "Core", "skills": ["Test Automation Frameworks", "Software Validation", "System Integration", "Release Management"]},
+    {"label": "Methods", "skills": ["Agile Development", "CI/CD Workflows", "Software Development Life Cycle", "Verification & Validation"]}
   ],
-  "spoken_languages": [
-    "English",
-    "Telugu",
-    "Hindi",
-    "Kannada",
-    "Tamil"
-  ],
+  "spoken_languages": ["English", "Telugu", "Hindi", "Kannada", "Tamil"],
   "experience": [
     {
       "role": "Lead Engineer",
@@ -95,7 +36,7 @@
       "role": "Lead Engineer",
       "company": "Bosch Global Software Technologies",
       "period": "January 2024 -- August 2025",
-      "location": "Bengaluru, India \u00b7 Reutlingen, Germany",
+      "location": "Bengaluru, India · Reutlingen, Germany",
       "client": "",
       "bullets": [
         "Led automotive software development and validation for safety-critical embedded systems, including ISO 26262-compliant processes.",
@@ -119,7 +60,7 @@
       "role": "Senior Software Engineer",
       "company": "Bosch Global Software Technologies",
       "period": "December 2021 -- January 2023",
-      "location": "Bengaluru, India \u00b7 Reutlingen, Germany",
+      "location": "Bengaluru, India · Reutlingen, Germany",
       "client": "",
       "bullets": [
         "Worked on embedded software development, testing, debugging, and integration for automotive applications.",
@@ -161,68 +102,5 @@
     "Certified Data Scientist",
     "Data Science Foundation",
     "Deep Learning with Keras and TensorFlow"
-  ],
-  "projects": [
-    {
-      "slug": "portfolio",
-      "title": "portfolio",
-      "featured": true,
-      "freelance": true,
-      "blurb": "Recruiter-facing site built from resume data and public GitHub projects. Live URL (after GitHub Pages is enabled): https://psunil0001-sys.github.io/portfolio/ Open the URL Vite prints. Because this project is configured for GitHub Pages, the app is served at /portfolio/ (for example http://localhost:5173/portfolio/).",
-      "tags": [
-        "TypeScript"
-      ],
-      "url": "https://github.com/psunil0001-sys/portfolio",
-      "stack": "TypeScript"
-    },
-    {
-      "slug": "revops",
-      "title": "revops",
-      "featured": false,
-      "freelance": true,
-      "blurb": "Interactive Streamlit app for tracking Kotak Multicap Fund - Regular Plan - Growth (scheme 149182), with a Manager-orchestrated multi-analyst research pipeline, Chroma memory, and a local LLM 60-day NAV scenario forecast.",
-      "tags": [
-        "Python"
-      ],
-      "url": "https://github.com/psunil0001-sys/revops",
-      "stack": "Python"
-    },
-    {
-      "slug": "LLM-Junit4-Unittest-Generator",
-      "title": "LLM Junit4 Unittest Generator",
-      "featured": false,
-      "freelance": true,
-      "blurb": "UnitTestgen generates Kotlin/JUnit4 tests for Android Gradle modules using a local OpenAI-compatible llama.cpp server, verifies the result with Gradle/Kover through MCP, and repairs only generated test code until the selected Gradle tasks pass.",
-      "tags": [
-        "Python"
-      ],
-      "url": "https://github.com/psunil0001-sys/LLM-Junit4-Unittest-Generator",
-      "stack": "Python"
-    },
-    {
-      "slug": "DAG-example",
-      "title": "DAG example",
-      "featured": false,
-      "freelance": true,
-      "blurb": "Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine. Your Astro project contains the following files and folders:",
-      "tags": [
-        "Python"
-      ],
-      "url": "https://github.com/psunil0001-sys/DAG-example",
-      "stack": "Python"
-    },
-    {
-      "slug": "calorietrack",
-      "title": "calorietrack",
-      "featured": false,
-      "freelance": true,
-      "blurb": "A modern Flutter-based mobile application utilizing the latest mobile development technologies and tools for building responsive cross-platform applications. - Android Studio / VS Code with Flutter extensions - Android SDK / Xcode (for iOS development)",
-      "tags": [
-        "Dart"
-      ],
-      "url": "https://github.com/psunil0001-sys/calorietrack",
-      "stack": "Dart"
-    }
-  ],
-  "resumeFile": "Sunilkumar_Pathipati_CV.pdf"
+  ]
 }

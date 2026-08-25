@@ -1,0 +1,7 @@
+.venv/
+out/
+__pycache__/
+*.pyc
+
+# Local-only CV tooling. Never published, never built in CI.
+local/

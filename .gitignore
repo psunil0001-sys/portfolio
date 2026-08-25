@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+linkedin-cv/.venv/
+linkedin-cv/out/
+linkedin-cv/__pycache__/
+
+# Local-only CV tooling. Never published, never built in CI.
+linkedin-cv/local/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -19,6 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install CV helper
+        run: pip install -r linkedin-cv/requirements.txt
+      - name: Build CV from LinkedIn data
+        run: python linkedin-cv/linkedin_cv.py --no-open
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -26,7 +33,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          GITHUB_PAGES: 'true'
+          GITHUB_PAGES: "true"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

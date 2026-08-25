@@ -1,0 +1,87 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=0.62in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{parskip}
+
+\definecolor{ink}{HTML}{0B0F14}
+\definecolor{teal}{HTML}{1AA38C}
+\definecolor{muted}{HTML}{4A5560}
+\definecolor{rule}{HTML}{1AA38C}
+
+\hypersetup{colorlinks=true,urlcolor=teal,linkcolor=teal}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=1.1em,itemsep=0.12em,topsep=0.15em,parsep=0pt}
+
+\titleformat{\section}
+  {\normalfont\bfseries\fontsize{11}{13}\selectfont\color{ink}\uppercase}
+  {}{0pt}{}[\vspace{1pt}{\color{rule}\titlerule[0.8pt]}\vspace{4pt}]
+\titlespacing*{\section}{0pt}{10pt}{6pt}
+
+\newcommand{\roleline}[4]{%
+  \noindent\begin{tabularx}{\textwidth}{@{}X r@{}}
+    {\bfseries\color{ink}#1} & {\color{muted}\small #3}\\
+    {\color{teal}#2} & {\color{muted}\small #4}\\
+  \end{tabularx}\par\vspace{2pt}%
+}
+
+\begin{document}
+
+{\fontsize{22}{24}\selectfont\bfseries\color{ink} [[ name ]]\\[2pt]}
+{\fontsize{12}{14}\selectfont\color{teal} [[ title ]] \,{\color{muted}|}\, [[ headline ]]}
+
+\vspace{6pt}
+{\small\color{muted}
+[[ location ]]
+\quad\textbullet\quad
+\href{mailto:[[ email ]]}{[[ email ]]}
+\quad\textbullet\quad
+[[ phone ]]
+\quad\textbullet\quad
+\href{https://[[ linkedin ]]}{[[ linkedin ]]}
+\quad\textbullet\quad
+\href{https://[[ github ]]}{[[ github ]]}
+}
+
+\vspace{8pt}
+
+\section{Professional Summary}
+[[ summary ]]
+
+\section{Technical Skills}
+[% for group in skill_groups %]
+\noindent{\bfseries\color{ink}\small [[ group.label ]]:} [[ group.skills | join(', ') ]]\\[2pt]
+[% endfor %]
+\noindent{\bfseries\color{ink}\small Languages:} [[ spoken_languages | join(', ') ]]
+
+\section{Professional Experience}
+[% for job in experience %]
+\roleline{[[ job.role ]]}{[[ job.company ]][% if job.client %] \,{\normalfont\color{muted}(Client: [[ job.client ]])}[% endif %]}{[[ job.period ]]}{[[ job.location ]]}
+\begin{itemize}
+[% for bullet in job.bullets %]
+  \item [[ bullet ]]
+[% endfor %]
+\end{itemize}
+\vspace{4pt}
+[% endfor %]
+
+\section{Education}
+\roleline{[[ education.degree ]]}{[[ education.school ]]}{[[ education.period ]]}{[[ education.location ]]}
+
+\section{Certifications}
+\begin{itemize}
+[% for cert in certifications %]
+  \item [[ cert ]]
+[% endfor %]
+\end{itemize}
+
+\end{document}

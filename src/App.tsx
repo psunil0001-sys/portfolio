@@ -7,24 +7,40 @@ import { Hero } from './components/Hero'
 import { Nav } from './components/Nav'
 import { Projects } from './components/Projects'
 import { Skills } from './components/Skills'
-import { SiteProvider } from './data/SiteProvider'
+import { Aurora } from './components/fx/Aurora'
+import { CursorGlow } from './components/fx/CursorGlow'
+import { Intro } from './components/fx/Intro'
+import { ScrollProgress } from './components/fx/ScrollProgress'
+import { SiteProvider, useSite } from './data/SiteProvider'
+
+function Shell() {
+  const { profile } = useSite()
+
+  return (
+    <div className="blueprint relative min-h-svh">
+      <Intro name={profile.name} />
+      <Aurora />
+      <CursorGlow />
+      <ScrollProgress />
+      <HashScroll />
+      <Nav />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Education />
+        <Contact />
+      </main>
+    </div>
+  )
+}
 
 function App() {
   return (
     <SiteProvider>
-      <div className="blueprint min-h-svh">
-        <HashScroll />
-        <Nav />
-        <main>
-          <Hero />
-          <About />
-          <Skills />
-          <Projects />
-          <Experience />
-          <Education />
-          <Contact />
-        </main>
-      </div>
+      <Shell />
     </SiteProvider>
   )
 }
