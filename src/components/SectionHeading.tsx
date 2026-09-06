@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useReducedMotion, useScroll, useSpring, useTransform, useVelocity } from 'framer-motion'
 import { easeOutExpo } from '../motion'
+import { ScrambleText } from './fx/ScrambleText'
 import { SplitText } from './fx/SplitText'
 
 type Props = {
@@ -11,6 +13,14 @@ type Props = {
 
 export function SectionHeading({ index, title, children }: Props) {
   const reduce = useReducedMotion()
+  const ref = useRef<HTMLHeadingElement>(null)
+
+  const { scrollY } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const rawVelocity = useVelocity(scrollY)
+  // Smooth the raw velocity so the skew eases in and settles back rather than jittering.
+  const velocity = useSpring(rawVelocity, { stiffness: 120, damping: 20, mass: 0.3 })
+  // A subtle skew that leans with scroll velocity, then settles back — makes headings feel weighty.
+  const skewX = useTransform(velocity, [-1800, 0, 1800], [3.5, 0, -3.5])
 
   return (
     <div className="mb-10 flex flex-col gap-3 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
@@ -30,11 +40,15 @@ export function SectionHeading({ index, title, children }: Props) {
             transition={{ duration: 0.7, ease: easeOutExpo }}
             className="block h-px w-8 origin-left bg-amber"
           />
-          {index}
+          <ScrambleText text={index} />
         </motion.p>
-        <h2 className="font-display text-3xl font-bold tracking-tight text-paper sm:text-4xl">
+        <motion.h2
+          ref={ref}
+          style={reduce ? undefined : { skewX }}
+          className="font-display text-3xl font-bold tracking-tight text-paper will-change-transform sm:text-4xl"
+        >
           <SplitText text={title} inView stagger={0.028} />
-        </h2>
+        </motion.h2>
       </div>
       {children ? (
         <motion.div

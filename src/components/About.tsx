@@ -3,6 +3,7 @@ import { useSite } from '../data/SiteProvider'
 import { easeOutExpo } from '../motion'
 import { Reveal } from './fx/Reveal'
 import { SectionHeading } from './SectionHeading'
+import { Tilt } from './fx/Tilt'
 
 export function About() {
   const { profile, spokenLanguages, experience } = useSite()
@@ -29,11 +30,11 @@ export function About() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.75, delay: 0.12, ease: easeOutExpo }}
             whileHover={reduce ? undefined : { y: -4 }}
-            className="glow-border border border-line bg-steel/60 p-6"
           >
-            <p className="font-display text-[0.7rem] tracking-[0.22em] text-teal uppercase">
-              Spoken languages
-            </p>
+            <Tilt max={6} className="glow-border border border-line bg-steel/60 p-6">
+              <p className="font-display text-[0.7rem] tracking-[0.22em] text-teal uppercase">
+                Spoken languages
+              </p>
             <motion.ul
               initial="hidden"
               whileInView="show"
@@ -64,6 +65,7 @@ export function About() {
                 ? `${current.role} at ${current.company}${current.client ? `, client ${current.client}` : ''}.`
                 : profile.title}
             </p>
+            </Tilt>
           </motion.div>
         </div>
       </div>

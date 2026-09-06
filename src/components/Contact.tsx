@@ -3,7 +3,9 @@ import { useSite } from '../data/SiteProvider'
 import { easeOutExpo } from '../motion'
 import { IconGitHub, IconLinkedIn, IconMail, IconPhone } from './Icons'
 import { Magnetic } from './fx/Magnetic'
+import { ScrollReveal } from './fx/ScrollReveal'
 import { SectionHeading } from './SectionHeading'
+import { Tilt } from './fx/Tilt'
 
 export function Contact() {
   const { profile } = useSite()
@@ -24,13 +26,14 @@ export function Contact() {
           Open to roles in Python, AI tooling, automotive software, and test framework leadership.
         </SectionHeading>
 
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.25 }}
-          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
-          className="frame frame-inner glow-border grid gap-4 p-6 sm:grid-cols-2 sm:p-8"
-        >
+        <ScrollReveal y={40} offset={['start 95%', 'start 45%']}>
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.25 }}
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+            className="frame frame-inner glow-border grid gap-4 p-6 sm:grid-cols-2 sm:p-8"
+          >
           {contacts.map((item) => (
             <motion.a
               key={item.label}
@@ -47,26 +50,29 @@ export function Contact() {
                 },
               }}
               whileHover={reduce ? undefined : { y: -5 }}
-              className="spotlight group flex items-start gap-4 border border-line bg-mist/70 p-5 transition-colors duration-300 hover:border-teal/50"
+              className="h-full"
             >
-              <motion.span
-                whileHover={reduce ? undefined : { rotate: -8, scale: 1.15 }}
-                transition={{ type: 'spring', stiffness: 340, damping: 16 }}
-                className="mt-0.5 shrink-0 text-teal"
-              >
-                <item.icon className="h-5 w-5" />
-              </motion.span>
-              <span>
-                <span className="block font-display text-[0.68rem] tracking-[0.22em] text-muted uppercase">
-                  {item.label}
+              <Tilt max={7} className="spotlight flex h-full items-start gap-4 border border-line bg-mist/70 p-5 transition-colors duration-300 hover:border-teal/50">
+                <motion.span
+                  whileHover={reduce ? undefined : { rotate: -8, scale: 1.15 }}
+                  transition={{ type: 'spring', stiffness: 340, damping: 16 }}
+                  className="mt-0.5 shrink-0 text-teal"
+                >
+                  <item.icon className="h-5 w-5" />
+                </motion.span>
+                <span>
+                  <span className="block font-display text-[0.68rem] tracking-[0.22em] text-muted uppercase">
+                    {item.label}
+                  </span>
+                  <span className="mt-1 block text-paper transition-colors duration-300 group-hover:text-teal">
+                    {item.value}
+                  </span>
                 </span>
-                <span className="mt-1 block text-paper transition-colors duration-300 group-hover:text-teal">
-                  {item.value}
-                </span>
-              </span>
+              </Tilt>
             </motion.a>
           ))}
-        </motion.div>
+          </motion.div>
+        </ScrollReveal>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8">
           <Magnetic>

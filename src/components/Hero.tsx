@@ -4,6 +4,7 @@ import { useSite } from '../data/SiteProvider'
 import { easeOutExpo } from '../motion'
 import { IconArrow, IconGitHub, IconLinkedIn } from './Icons'
 import { Counter } from './fx/Counter'
+import { Float } from './fx/Float'
 import { Magnetic } from './fx/Magnetic'
 import { Marquee } from './fx/Marquee'
 import { SplitText } from './fx/SplitText'
@@ -18,7 +19,7 @@ const signals = [
 const INTRO_DELAY = 1.15
 
 export function Hero() {
-  const { profile, skillGroups, projects } = useSite()
+  const { profile, skillGroups } = useSite()
   const resumeHref = `${import.meta.env.BASE_URL}${profile.resumeFile}`
   const reduce = useReducedMotion()
   const ref = useRef<HTMLElement>(null)
@@ -44,10 +45,29 @@ export function Hero() {
   })
 
   return (
-    <section ref={ref} id="top" className="relative px-5 pt-12 pb-16 sm:px-8 sm:pt-16 sm:pb-20">
+    <section ref={ref} id="top" className="relative overflow-hidden px-5 pt-12 pb-16 sm:px-8 sm:pt-16 sm:pb-20">
+      {/* Ambient floating accents — thin rings + a couple of glowing motes drifting on their own. */}
+      <div className="pointer-events-none absolute inset-0 -z-0 hidden sm:block" aria-hidden="true">
+        <Float className="top-[14%] left-[4%] h-16 w-16" parallax={56} bob={16} duration={8}>
+          <span className="block h-full w-full rounded-full border border-teal/25" />
+        </Float>
+        <Float className="top-[62%] left-[13%] h-8 w-8" parallax={92} bob={12} duration={6} delay={1}>
+          <span className="block h-full w-full rounded-full bg-teal/70 blur-[2px] shadow-[0_0_16px_rgba(46,230,199,0.7)]" />
+        </Float>
+        <Float className="top-[22%] right-[6%] h-24 w-24" parallax={36} bob={18} duration={9} delay={0.6}>
+          <span className="block h-full w-full rounded-full border border-amber/30" />
+        </Float>
+        <Float className="top-[58%] right-[12%] h-5 w-5" parallax={120} bob={10} duration={5} delay={2}>
+          <span className="block h-full w-full rounded-full bg-amber/70 blur-[1px] shadow-[0_0_14px_rgba(240,180,41,0.7)]" />
+        </Float>
+        <Float className="top-[80%] left-[48%] h-11 w-11" parallax={70} bob={14} duration={7.5} delay={1.4}>
+          <span className="block h-full w-full rounded-full border border-paper/15" />
+        </Float>
+      </div>
+
       <motion.div
         style={reduce ? undefined : { opacity: fade }}
-        className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_230px] lg:items-end"
+        className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1fr)_230px] lg:items-end"
       >
         <motion.div
           style={reduce ? undefined : { y: lift }}
@@ -145,7 +165,7 @@ export function Hero() {
             <div>
               <dt className="text-[0.65rem] tracking-[0.2em] text-muted uppercase">Projects</dt>
               <dd className="font-display text-2xl font-bold text-teal">
-                <Counter to={projects.length} />
+                <Counter to={profile.projectCount} />
               </dd>
             </div>
             <div>

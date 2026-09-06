@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useSite } from '../data/SiteProvider'
 import { easeOutExpo } from '../motion'
+import { ScrollReveal } from './fx/ScrollReveal'
 import { SectionHeading } from './SectionHeading'
 
 export function Education() {
@@ -15,30 +16,25 @@ export function Education() {
         </SectionHeading>
 
         <div className="grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
-          <motion.article
-            initial={reduce ? false : { opacity: 0, y: 28, filter: 'blur(10px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.7, ease: easeOutExpo }}
-            whileHover={reduce ? undefined : { y: -6 }}
-            className="spotlight border border-line bg-steel/50 p-6 transition-colors duration-300 hover:border-teal/40 sm:p-8"
-          >
-            <p className="font-display text-[0.7rem] tracking-[0.22em] text-teal uppercase">Degree</p>
-            <h3 className="mt-3 font-display text-2xl font-bold text-paper">{education.degree}</h3>
-            <p className="mt-3 text-muted">{education.school}</p>
-            <p className="mt-1 text-sm text-amber">
-              {education.period} · {education.location}
-            </p>
-          </motion.article>
+          <ScrollReveal y={30}>
+            <motion.article
+              whileHover={reduce ? undefined : { y: -6 }}
+              className="h-full spotlight border border-line bg-steel/50 p-6 transition-colors duration-300 hover:border-teal/40 sm:p-8"
+            >
+              <p className="font-display text-[0.7rem] tracking-[0.22em] text-teal uppercase">Degree</p>
+              <h3 className="mt-3 font-display text-2xl font-bold text-paper">{education.degree}</h3>
+              <p className="mt-3 text-muted">{education.school}</p>
+              <p className="mt-1 text-sm text-amber">
+                {education.period} · {education.location}
+              </p>
+            </motion.article>
+          </ScrollReveal>
 
-          <motion.article
-            initial={reduce ? false : { opacity: 0, y: 28, filter: 'blur(10px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: easeOutExpo }}
-            whileHover={reduce ? undefined : { y: -6 }}
-            className="border border-line bg-mist p-6 transition-colors duration-300 hover:border-amber/40 sm:p-8"
-          >
+          <ScrollReveal y={30} offset={['start 90%', 'start 48%']}>
+            <motion.article
+              whileHover={reduce ? undefined : { y: -6 }}
+              className="h-full border border-line bg-mist p-6 transition-colors duration-300 hover:border-amber/40 sm:p-8"
+            >
             <p className="font-display text-[0.7rem] tracking-[0.22em] text-amber uppercase">
               Certifications
             </p>
@@ -62,7 +58,8 @@ export function Education() {
                 </motion.li>
               ))}
             </motion.ul>
-          </motion.article>
+            </motion.article>
+          </ScrollReveal>
         </div>
       </div>
     </section>

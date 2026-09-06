@@ -17,8 +17,8 @@ export const projects: Project[] = [
     freelance: true,
     stack: 'Python',
     blurb:
-      'Local Kotlin/JUnit4 test generator for Android Gradle modules. A classification-driven pipeline ranks RAG context, builds focused prompts, validates with Gradle and Kover, then repairs only generated tests until the selected tasks pass — all against an on-prem llama.cpp server.',
-    tags: ['Python', 'llama.cpp', 'RAG', 'Kotlin', 'JUnit4', 'Gradle', 'MCP'],
+      'Agentic Kotlin/JUnit4 test generator for Android Gradle modules. A Google ADK planner/coder/fixer pipeline drafts tests, runs them through Gradle and Kover (with optional JaCoCo), then repairs only the generated test code until the selected acceptance tasks pass — backed by a local llama.cpp server or a remote OpenAI-compatible vLLM endpoint.',
+    tags: ['Python', 'ADK', 'llama.cpp', 'vLLM', 'Gradle', 'Kover', 'Kotlin', 'JUnit4'],
     url: 'https://github.com/psunil0001-sys/LLM-Junit4-Unittest-Generator',
   },
   {
@@ -27,8 +27,8 @@ export const projects: Project[] = [
     freelance: true,
     stack: 'Python',
     blurb:
-      'Streamlit dashboard for tracking Kotak Multicap Fund with a manager-orchestrated research desk: fundamentals, sentiment, news, and technical analysts, Chroma memory, and local-LLM 60-day NAV scenario forecasts.',
-    tags: ['Streamlit', 'Agents', 'ChromaDB', 'llama.cpp', 'Python'],
+      'Multi-fund portfolio tracker in Streamlit — mutual funds, ULIPs, and NPS schemes pulled from mfapi.in and local CSVs — with a manager-orchestrated research desk of five analysts (Fundamentals, Sentiment, News, Technical, Policy), Chroma memory, and bootstrap plus local-LLM-refined 60-day NAV scenario forecasts.',
+    tags: ['Streamlit', 'Multi-Agent', 'ChromaDB', 'llama.cpp', 'Bootstrap', 'Python'],
     url: 'https://github.com/psunil0001-sys/revops',
   },
   {
@@ -37,8 +37,8 @@ export const projects: Project[] = [
     freelance: true,
     stack: 'Dart',
     blurb:
-      'Flutter calorie-tracking app with light/dark theming, typed routing, and responsive layouts. Built as a cross-platform mobile client with a structured presentation layer and reusable widgets.',
-    tags: ['Flutter', 'Dart', 'Mobile'],
+      'Cross-platform Flutter calorie tracker built on the latest stable Flutter. Structured layer split (core / presentation / routes / theme / widgets), a full light-and-dark theming system, typed app routing, and reusable widgets for a responsive mobile experience.',
+    tags: ['Flutter', 'Dart', 'Theming', 'Routing', 'Mobile'],
     url: 'https://github.com/psunil0001-sys/calorietrack',
   },
   {

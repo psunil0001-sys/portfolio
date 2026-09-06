@@ -9,8 +9,10 @@ import { Projects } from './components/Projects'
 import { Skills } from './components/Skills'
 import { Aurora } from './components/fx/Aurora'
 import { CursorGlow } from './components/fx/CursorGlow'
+import { CursorRipple } from './components/fx/CursorRipple'
 import { Intro } from './components/fx/Intro'
 import { ScrollProgress } from './components/fx/ScrollProgress'
+import { SmoothScroll } from './components/fx/SmoothScroll'
 import { SiteProvider, useSite } from './data/SiteProvider'
 
 function Shell() {
@@ -21,7 +23,9 @@ function Shell() {
       <Intro name={profile.name} />
       <Aurora />
       <CursorGlow />
+      <CursorRipple />
       <ScrollProgress />
+      <SmoothScroll />
       <HashScroll />
       <Nav />
       <main>

@@ -11,6 +11,8 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/sunilkumar-pathipati-206098bb',
   github: 'https://github.com/psunil0001-sys',
   resumeFile: 'Sunilkumar_Pathipati_Resume.pdf',
+  /** Total professional projects delivered across all roles (most are private, so not all are listed). */
+  projectCount: 9,
   summary:
     'Lead Engineer with 9+ years of experience in automotive software engineering, embedded systems, artificial intelligence, and application development. Expertise in Python, C, AUTOSAR, machine learning, and Agile development practices. Experienced in developing safety-critical automotive solutions, including anti-lock braking systems for eBikes and two-wheelers, with strong exposure to ISO 26262 functional safety environments. Skilled in Python-based automation frameworks, local LLM tooling, intelligent testing platforms, software integration, verification and validation, release management, and engineering productivity improvement.',
 }
