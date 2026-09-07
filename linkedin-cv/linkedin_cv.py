@@ -30,6 +30,9 @@ INBOX_DIR = ROOT / "inbox"
 SITE_DIR = ROOT.parent
 GITHUB_USER = "psunil0001-sys"
 LINKEDIN_URL = "https://www.linkedin.com/in/sunilkumar-pathipati-206098bb"
+# Recruiter downloads must keep using the checked-in full resume, not the generated stub.
+SITE_RESUME_FILE = "Sunilkumar_Pathipati_Resume.pdf"
+GENERATED_CV_FILE = "Sunilkumar_Pathipati_CV.pdf"
 
 LATEX_MAP = {
     "\\": r"\textbackslash{}",
@@ -413,18 +416,33 @@ def write_pdf(data: dict, tex_path: Path, pdf_path: Path) -> Path:
     return pdf_path
 
 
-def publish_site(data: dict, pdf_path: Path, resume_file: str) -> None:
+def curated_projects(seed: dict, data: dict) -> list:
+    """Site projects come from the seed allowlist, never a live GitHub scrape."""
+    projects = seed.get("projects")
+    if projects:
+        return deepcopy(projects)
+    return list(data.get("projects") or [])
+
+
+def publish_site(data: dict, pdf_path: Path, seed: dict) -> None:
     site_public = SITE_DIR / "public"
     if not site_public.is_dir():
         return
-    dest_pdf = site_public / resume_file
-    shutil.copy2(pdf_path, dest_pdf)
+    dest_cv = site_public / GENERATED_CV_FILE
+    shutil.copy2(pdf_path, dest_cv)
+    resume_dest = site_public / SITE_RESUME_FILE
+    if not resume_dest.is_file():
+        print(f"Warning: {resume_dest} is missing; recruiter downloads will 404 until the full resume is added.")
+    elif resume_dest.stat().st_size < 50_000:
+        print(f"Warning: {resume_dest} looks too small for a full recruiter resume.")
     payload = dict(data)
-    payload["resumeFile"] = resume_file
+    payload["resumeFile"] = SITE_RESUME_FILE
+    payload["projects"] = curated_projects(seed, data)
     live_path = site_public / "live.json"
-    live_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    live_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     print(f"Updated site data: {live_path}")
-    print(f"Updated site resume: {dest_pdf}")
+    print(f"Updated generated CV artifact: {dest_cv}")
+    print(f"Recruiter resumeFile stays {SITE_RESUME_FILE} (not overwritten by the generated CV)")
 
 
 def resolve_pdf(
@@ -462,7 +480,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--timeout", type=int, default=180, help="Watch timeout in seconds")
     parser.add_argument("--no-open", action="store_true", help="Do not open the LinkedIn profile in a browser")
     parser.add_argument("--seed-only", action="store_true", help="Skip LinkedIn PDF and compile from resume_seed.json")
-    parser.add_argument("--skip-github", action="store_true", help="Do not fetch GitHub repos")
+    parser.add_argument(
+        "--skip-github",
+        action="store_true",
+        help="Do not fetch GitHub repos (default). Site projects stay curated either way.",
+    )
+    parser.add_argument(
+        "--github",
+        action="store_true",
+        help="Opt in: fetch public repos for the generated CV only. Never overwrites site curated projects or resumeFile.",
+    )
     return parser.parse_args()
 
 
@@ -471,10 +498,11 @@ def build_base_data(
     pdf: Path | None = None,
     seed_only: bool = False,
     skip_github: bool = False,
+    fetch_github: bool = False,
     no_open: bool = True,
     watch: bool = False,
     timeout: int = 180,
-) -> dict:
+) -> tuple[dict, dict]:
     seed = load_seed()
     pdf_path = resolve_pdf(
         pdf=pdf, seed_only=seed_only, no_open=no_open, watch=watch, timeout=timeout
@@ -483,32 +511,36 @@ def build_base_data(
     if pdf_path:
         print(f"Reading {pdf_path}")
         data = parse_linkedin(extract_pdf_text(pdf_path), seed)
-    if not skip_github:
+    data["projects"] = curated_projects(seed, data)
+    if fetch_github and not skip_github:
         try:
             data["projects"] = fetch_github_projects()
-            print(f"Loaded {len(data['projects'])} GitHub projects")
+            print(f"Loaded {len(data['projects'])} GitHub projects for the generated CV only")
         except Exception as exc:
-            print(f"GitHub fetch failed ({exc}); continuing without live repos")
-            data.setdefault("projects", [])
-    return data
+            print(f"GitHub fetch failed ({exc}); keeping curated projects")
+            data["projects"] = curated_projects(seed, data)
+    else:
+        print("Skipping GitHub project fetch; using curated projects from resume_seed.json")
+    return data, seed
 
 
 def main() -> int:
     args = parse_args()
-    data = build_base_data(
+    data, seed = build_base_data(
         pdf=args.pdf,
         seed_only=args.seed_only,
         skip_github=args.skip_github,
+        fetch_github=args.github,
         no_open=args.no_open,
         watch=args.watch,
         timeout=args.timeout,
     )
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    named = OUT_DIR / "Sunilkumar_Pathipati_CV.pdf"
+    named = OUT_DIR / GENERATED_CV_FILE
     pdf_path = write_pdf(data, OUT_DIR / "cv.tex", named)
     print(f"CV ready: {pdf_path}")
-    publish_site(data, pdf_path, "Sunilkumar_Pathipati_CV.pdf")
+    publish_site(data, pdf_path, seed)
     return 0
 
 

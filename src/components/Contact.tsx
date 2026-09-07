@@ -78,7 +78,7 @@ export function Contact() {
           <Magnetic>
             <a
               href={resumeHref}
-              download
+              download={profile.resumeFile}
               className="group relative inline-flex items-center overflow-hidden border border-amber/40 px-5 py-3 text-[0.75rem] font-semibold tracking-[0.16em] text-amber uppercase"
             >
               <span className="absolute inset-0 -translate-x-full bg-amber transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0" />

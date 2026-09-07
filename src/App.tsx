@@ -27,8 +27,11 @@ function Shell() {
       <ScrollProgress />
       <SmoothScroll />
       <HashScroll />
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <Nav />
-      <main>
+      <main id="main">
         <Hero />
         <About />
         <Skills />

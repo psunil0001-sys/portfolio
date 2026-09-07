@@ -125,7 +125,7 @@ export function Hero() {
             <Magnetic>
               <a
                 href={resumeHref}
-                download
+                download={profile.resumeFile}
                 className="inline-flex items-center gap-2 border border-paper/25 px-5 py-3 text-[0.78rem] font-semibold tracking-[0.14em] text-paper uppercase transition-colors duration-300 hover:border-amber hover:text-amber"
               >
                 Download PDF
