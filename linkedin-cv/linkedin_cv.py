@@ -439,7 +439,7 @@ def publish_site(data: dict, pdf_path: Path, seed: dict) -> None:
     payload["resumeFile"] = SITE_RESUME_FILE
     payload["projects"] = curated_projects(seed, data)
     live_path = site_public / "live.json"
-    live_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    live_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Updated site data: {live_path}")
     print(f"Updated generated CV artifact: {dest_cv}")
     print(f"Recruiter resumeFile stays {SITE_RESUME_FILE} (not overwritten by the generated CV)")
