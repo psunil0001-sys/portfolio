@@ -30,7 +30,7 @@ export function About() {
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 30, filter: 'blur(10px)' }}
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.75, delay: 0.12, ease: easeOutExpo }}
             whileHover={reduce ? undefined : { y: -4 }}
           >
@@ -41,7 +41,7 @@ export function About() {
             <motion.ul
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true, amount: 0.5 }}
+              viewport={{ once: false, amount: 0.5 }}
               variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } } }}
               className="mt-4 flex flex-wrap gap-2"
             >

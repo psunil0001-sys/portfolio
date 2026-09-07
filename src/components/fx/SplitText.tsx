@@ -20,7 +20,7 @@ export function SplitText({ text, className, delay = 0, stagger = 0.03, inView =
   }
 
   const animateProps = inView
-    ? { whileInView: 'show' as const, viewport: { once: true, amount: 0.6 } }
+    ? { whileInView: 'show' as const, viewport: { once: false, amount: 0.6 } }
     : { animate: 'show' as const }
 
   let index = -1

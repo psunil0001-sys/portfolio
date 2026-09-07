@@ -32,7 +32,7 @@ export function GsapScroll() {
             scrollTrigger: {
               trigger: section,
               start: 'top 84%',
-              once: true,
+              toggleActions: 'play reverse play reverse',
             },
           },
         ),

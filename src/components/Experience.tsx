@@ -35,14 +35,14 @@ export function Experience() {
               key={`${role.company}-${role.role}-${role.period}`}
               initial={reduce ? false : { opacity: 0, x: -28, filter: 'blur(8px)' }}
               whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-              viewport={{ once: true, amount: 0.25 }}
+              viewport={{ once: false, amount: 0.25 }}
               transition={{ duration: 0.7, delay: index * 0.05, ease: easeOutExpo }}
               className="group relative mb-12 last:mb-0"
             >
               <motion.span
                 initial={reduce ? false : { scale: 0 }}
                 whileInView={{ scale: 1 }}
-                viewport={{ once: true, amount: 0.6 }}
+                viewport={{ once: false, amount: 0.6 }}
                 transition={{ type: 'spring', stiffness: 420, damping: 18, delay: 0.1 }}
                 className="timeline-dot absolute top-1.5 -left-[1.55rem] h-2.5 w-2.5 rounded-full bg-teal sm:-left-[2.32rem]"
               />
@@ -68,7 +68,7 @@ export function Experience() {
               <motion.ul
                 initial="hidden"
                 whileInView="show"
-                viewport={{ once: true, amount: 0.2 }}
+                viewport={{ once: false, amount: 0.2 }}
                 variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } } }}
                 className="mt-4 space-y-2"
               >

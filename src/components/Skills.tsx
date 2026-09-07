@@ -20,7 +20,7 @@ export function Skills() {
               key={group.label}
               initial={reduce ? false : { opacity: 0, y: 26, filter: 'blur(8px)' }}
               whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 0.7, delay: groupIndex * 0.06, ease: easeOutExpo }}
             >
               <h3 className="mb-4 flex items-center gap-3 font-display text-sm font-semibold tracking-[0.18em] text-teal uppercase">
@@ -29,7 +29,7 @@ export function Skills() {
                   aria-hidden="true"
                   initial={reduce ? false : { scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true, amount: 0.5 }}
+                  viewport={{ once: false, amount: 0.5 }}
                   transition={{ duration: 0.9, delay: 0.15, ease: easeOutExpo }}
                   className="block h-px flex-1 origin-left bg-gradient-to-r from-teal/60 to-transparent"
                 />
@@ -38,7 +38,7 @@ export function Skills() {
               <motion.ul
                 initial="hidden"
                 whileInView="show"
-                viewport={{ once: true, amount: 0.3 }}
+                viewport={{ once: false, amount: 0.3 }}
                 variants={{ hidden: {}, show: { transition: { staggerChildren: 0.045 } } }}
                 className="flex flex-wrap gap-2"
               >

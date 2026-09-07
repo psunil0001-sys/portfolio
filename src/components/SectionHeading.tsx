@@ -28,7 +28,7 @@ export function SectionHeading({ index, title, children }: Props) {
         <motion.p
           initial={reduce ? false : { opacity: 0, x: -14 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
+          viewport={{ once: false, amount: 0.6 }}
           transition={{ duration: 0.55, ease: easeOutExpo }}
           className="mb-2 flex items-center gap-3 font-display text-[0.72rem] font-semibold tracking-[0.28em] text-amber uppercase"
         >
@@ -36,7 +36,7 @@ export function SectionHeading({ index, title, children }: Props) {
             aria-hidden="true"
             initial={reduce ? false : { scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, amount: 0.6 }}
+            viewport={{ once: false, amount: 0.6 }}
             transition={{ duration: 0.7, ease: easeOutExpo }}
             className="block h-px w-8 origin-left bg-amber"
           />
@@ -54,7 +54,7 @@ export function SectionHeading({ index, title, children }: Props) {
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 12, filter: 'blur(6px)' }}
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true, amount: 0.6 }}
+          viewport={{ once: false, amount: 0.6 }}
           transition={{ duration: 0.6, delay: 0.1, ease: easeOutExpo }}
           className="max-w-md text-sm text-muted sm:text-right"
         >

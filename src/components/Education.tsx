@@ -41,7 +41,7 @@ export function Education() {
             <motion.ul
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true, amount: 0.4 }}
+              viewport={{ once: false, amount: 0.4 }}
               variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } } }}
               className="mt-4 space-y-3"
             >

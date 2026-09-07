@@ -30,7 +30,7 @@ export function Contact() {
           <motion.div
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.25 }}
+            viewport={{ once: false, amount: 0.25 }}
             variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
             className="frame frame-inner glow-border grid gap-4 p-6 sm:grid-cols-2 sm:p-8"
           >

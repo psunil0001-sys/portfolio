@@ -8,7 +8,7 @@ export const sectionIds = ['about', 'skills', 'projects', 'experience', 'educati
 export const spring: Transition = { type: 'spring', stiffness: 220, damping: 26, mass: 0.9 }
 export const softSpring: Transition = { type: 'spring', stiffness: 120, damping: 20 }
 
-export const viewportOnce = { once: true, amount: 0.25 } as const
+export const viewportOnce = { once: false, amount: 0.25 } as const
 
 export const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28, filter: 'blur(10px)' },

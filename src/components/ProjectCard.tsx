@@ -44,7 +44,7 @@ export function ProjectCard({ project, index }: Props) {
       onMouseLeave={onLeave}
       initial={reduce ? false : { opacity: 0, y: 46, filter: 'blur(12px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, amount: 0.2 }}
+      viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 0.8, delay: index * 0.09, ease: easeOutExpo }}
       whileHover={reduce ? undefined : { y: -8 }}
       style={reduce ? undefined : { rotateX, rotateY, transformPerspective: 1000 }}
@@ -84,7 +84,7 @@ export function ProjectCard({ project, index }: Props) {
       <motion.ul
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.4 }}
+        viewport={{ once: false, amount: 0.4 }}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05, delayChildren: 0.2 } } }}
         className="mt-6 flex flex-wrap gap-2"
       >

@@ -52,10 +52,7 @@ export function ScrambleText({ text, className, duration = 900 }: Props) {
     if (!node) return
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setInView(true)
-          observer.disconnect()
-        }
+        setInView(Boolean(entries[0]?.isIntersecting))
       },
       { threshold: 0.5 },
     )

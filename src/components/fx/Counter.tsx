@@ -10,12 +10,16 @@ type Props = {
 
 export function Counter({ to, suffix = '', duration = 1.4, className }: Props) {
   const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true, amount: 0.6 })
+  const inView = useInView(ref, { once: false, amount: 0.6 })
   const reduce = useReducedMotion()
   const [value, setValue] = useState(reduce ? to : 0)
 
   useEffect(() => {
-    if (!inView || reduce) return
+    if (reduce) return
+    if (!inView) {
+      setValue(0)
+      return
+    }
     const controls = animate(0, to, {
       duration,
       ease: [0.16, 1, 0.3, 1],
