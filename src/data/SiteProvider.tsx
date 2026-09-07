@@ -9,7 +9,6 @@ import {
   spokenLanguages as fallbackSpoken,
   type Role,
 } from './resume'
-import { fetchGithubProjects } from '../lib/github'
 
 export type SiteProfile = typeof fallbackProfile
 
@@ -22,10 +21,11 @@ export type SiteData = {
   certifications: string[]
   projects: Project[]
   loading: boolean
-  source: string
 }
 
 const SiteContext = createContext<SiteData | null>(null)
+
+const STUB_RESUME_FILE = 'Sunilkumar_Pathipati_CV.pdf'
 
 type LiveFile = {
   name?: string
@@ -43,7 +43,6 @@ type LiveFile = {
   experience?: Role[]
   education?: typeof fallbackEducation
   certifications?: string[]
-  projects?: Project[]
 }
 
 /** live.json comes from the LaTeX pipeline, which writes date ranges as `--`. */
@@ -57,6 +56,11 @@ function splitName(name: string) {
     firstName: parts[0] || fallbackProfile.firstName,
     lastName: parts.slice(1).join(' ') || fallbackProfile.lastName,
   }
+}
+
+function recruiterResumeFile(value?: string) {
+  if (!value || value === STUB_RESUME_FILE) return fallbackProfile.resumeFile
+  return value
 }
 
 function mapLive(live: LiveFile): Partial<SiteData> {
@@ -85,7 +89,7 @@ function mapLive(live: LiveFile): Partial<SiteData> {
       linkedin,
       github,
       summary: live.summary || fallbackProfile.summary,
-      resumeFile: live.resumeFile || fallbackProfile.resumeFile,
+      resumeFile: recruiterResumeFile(live.resumeFile),
     },
     skillGroups: live.skill_groups?.length
       ? live.skill_groups.map((group) => ({
@@ -101,12 +105,11 @@ function mapLive(live: LiveFile): Partial<SiteData> {
       ? { ...live.education, period: dash(live.education.period) }
       : fallbackEducation,
     certifications: live.certifications ?? fallbackCerts,
-    projects: live.projects?.length ? live.projects : fallbackProjects,
   }
 }
 
 export function SiteProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<Omit<SiteData, 'loading' | 'source'>>({
+  const [data, setData] = useState<Omit<SiteData, 'loading'>>({
     profile: fallbackProfile,
     skillGroups: fallbackSkills,
     spokenLanguages: fallbackSpoken,
@@ -116,7 +119,6 @@ export function SiteProvider({ children }: { children: ReactNode }) {
     projects: fallbackProjects,
   })
   const [loading, setLoading] = useState(true)
-  const [source, setSource] = useState('resume seed')
 
   useEffect(() => {
     let cancelled = false
@@ -125,7 +127,6 @@ export function SiteProvider({ children }: { children: ReactNode }) {
       const live = await fetch(liveUrl)
         .then((response) => (response.ok ? (response.json() as Promise<LiveFile>) : null))
         .catch(() => null)
-      const githubProjects = await fetchGithubProjects().catch(() => [] as Project[])
       if (cancelled) return
       const mapped = live ? mapLive(live) : {}
       setData({
@@ -135,14 +136,9 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         experience: mapped.experience ?? fallbackExperience,
         education: mapped.education ?? fallbackEducation,
         certifications: mapped.certifications ?? fallbackCerts,
-        projects: githubProjects.length
-          ? githubProjects
-          : (mapped.projects ?? fallbackProjects),
+        // Curated list in src/data/projects.ts — never replace from GitHub or live.json scrapes.
+        projects: fallbackProjects,
       })
-      const bits = []
-      if (live) bits.push('LinkedIn/live.json')
-      if (githubProjects.length) bits.push('GitHub')
-      setSource(bits.join(' + ') || 'resume seed')
       setLoading(false)
     }
     void load()
@@ -152,8 +148,8 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = useMemo(
-    () => ({ ...data, loading, source }),
-    [data, loading, source],
+    () => ({ ...data, loading }),
+    [data, loading],
   )
 
   return <SiteContext.Provider value={value}>{children}</SiteContext.Provider>

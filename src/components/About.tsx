@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import { aboutParagraphs } from '../data/resume'
 import { useSite } from '../data/SiteProvider'
 import { easeOutExpo } from '../motion'
 import { Reveal } from './fx/Reveal'
@@ -14,14 +15,16 @@ export function About() {
     <section id="about" className="scroll-mt-24 px-5 py-20 sm:px-8 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <SectionHeading index="01 / Profile" title="About">
-          Automotive software first. AI tooling now. Same obsession with verification.
+          Automotive software, functional safety, and on-prem AI for test.
         </SectionHeading>
 
         <div className="grid gap-10 lg:grid-cols-[1.4fr_0.8fr]">
           <Reveal>
-            <p className="max-w-3xl text-base leading-relaxed text-paper/85 sm:text-lg">
-              {profile.summary}
-            </p>
+            <div className="max-w-3xl space-y-4 text-base leading-relaxed text-paper/85 sm:text-lg">
+              {aboutParagraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+              ))}
+            </div>
           </Reveal>
 
           <motion.div

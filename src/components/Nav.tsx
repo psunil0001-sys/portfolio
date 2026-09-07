@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, LayoutGroup, motion, useMotionValueEvent, useReducedMotion, useScroll } from 'framer-motion'
 import { useSite } from '../data/SiteProvider'
 import { easeOutExpo, sectionIds } from '../motion'
@@ -15,13 +15,15 @@ const links = [
 ]
 
 export function Nav() {
-  const { profile, loading, source } = useSite()
+  const { profile } = useSite()
   const resumeHref = `${import.meta.env.BASE_URL}${profile.resumeFile}`
   const reduce = useReducedMotion()
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('about')
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const firstLinkRef = useRef<HTMLAnchorElement>(null)
 
   const { scrollY } = useScroll()
 
@@ -52,6 +54,22 @@ export function Nav() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (!open) return
+    const frame = window.requestAnimationFrame(() => firstLinkRef.current?.focus())
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        menuButtonRef.current?.focus()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
   return (
     <motion.header
       initial={reduce ? false : { y: -80, opacity: 0 }}
@@ -70,18 +88,6 @@ export function Nav() {
           >
             SP
           </motion.span>
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={loading ? 'loading' : source}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.3 }}
-              className="ml-3 hidden font-sans text-[0.6rem] font-medium tracking-[0.14em] text-muted normal-case md:inline"
-            >
-              {loading ? 'syncing…' : source}
-            </motion.span>
-          </AnimatePresence>
         </a>
 
         <LayoutGroup>
@@ -92,6 +98,7 @@ export function Nav() {
                 <li key={link.href} className="relative">
                   <motion.a
                     href={link.href}
+                    aria-current={isActive ? 'location' : undefined}
                     whileHover={reduce ? undefined : { y: -2 }}
                     transition={{ type: 'spring', stiffness: 320, damping: 18 }}
                     className={`inline-block text-[0.78rem] font-medium tracking-[0.16em] uppercase transition-colors duration-200 ${
@@ -116,7 +123,7 @@ export function Nav() {
         <Magnetic>
           <a
             href={resumeHref}
-            download
+            download={profile.resumeFile}
             className="group relative hidden overflow-hidden border border-teal/40 px-3 py-1.5 text-[0.72rem] font-semibold tracking-[0.16em] text-teal uppercase md:inline-flex"
           >
             <span className="absolute inset-0 -translate-y-full bg-teal transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0" />
@@ -125,10 +132,12 @@ export function Nav() {
         </Magnetic>
 
         <motion.button
+          ref={menuButtonRef}
           type="button"
           whileTap={reduce ? undefined : { scale: 0.88 }}
           className="text-paper md:hidden"
           aria-expanded={open}
+          aria-controls="mobile-menu"
           aria-label={open ? 'Close menu' : 'Open menu'}
           onClick={() => setOpen((value) => !value)}
         >
@@ -136,22 +145,23 @@ export function Nav() {
         </motion.button>
       </nav>
 
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.35, ease: easeOutExpo }}
-            className="overflow-hidden border-t border-line bg-ink/90 backdrop-blur-xl md:hidden"
-          >
+      <div id="mobile-menu">
+        <AnimatePresence>
+          {open ? (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: easeOutExpo }}
+              className="overflow-hidden border-t border-line bg-ink/90 backdrop-blur-xl md:hidden"
+            >
             <motion.ul
               initial="hidden"
               animate="show"
               variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }}
               className="flex flex-col gap-1 px-5 py-4"
             >
-              {links.map((link) => (
+              {links.map((link, index) => (
                 <motion.li
                   key={link.href}
                   variants={{
@@ -160,7 +170,9 @@ export function Nav() {
                   }}
                 >
                   <a
+                    ref={index === 0 ? firstLinkRef : undefined}
                     href={link.href}
+                    aria-current={active === link.id ? 'location' : undefined}
                     className={`block py-2 text-sm tracking-[0.14em] uppercase ${
                       active === link.id ? 'text-teal' : 'text-paper'
                     }`}
@@ -178,7 +190,7 @@ export function Nav() {
               >
                 <a
                   href={resumeHref}
-                  download
+                  download={profile.resumeFile}
                   className="block py-2 text-sm tracking-[0.14em] text-teal uppercase"
                   onClick={() => setOpen(false)}
                 >
@@ -188,7 +200,8 @@ export function Nav() {
             </motion.ul>
           </motion.div>
         ) : null}
-      </AnimatePresence>
+        </AnimatePresence>
+      </div>
     </motion.header>
   )
 }
