@@ -19,7 +19,7 @@ export function Experience() {
     <section id="experience" className="scroll-mt-24 px-5 py-20 sm:px-8 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <SectionHeading index="04 / Timeline" title="Experience">
-          Bosch years across Bengaluru and Reutlingen, now leading AI test tooling for Polestar.
+          Bosch programs in Bengaluru and Reutlingen; now Lead Engineer on Polestar infotainment AI test tooling.
         </SectionHeading>
 
         <ol ref={listRef} className="relative pl-6 sm:pl-10">

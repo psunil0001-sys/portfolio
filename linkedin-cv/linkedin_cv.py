@@ -30,7 +30,7 @@ INBOX_DIR = ROOT / "inbox"
 SITE_DIR = ROOT.parent
 GITHUB_USER = "psunil0001-sys"
 LINKEDIN_URL = "https://www.linkedin.com/in/sunilkumar-pathipati-206098bb"
-# Recruiter downloads must keep using the checked-in full resume, not the generated stub.
+# Recruiter downloads use the generated ATS resume (same file as the pipeline PDF).
 SITE_RESUME_FILE = "Sunilkumar_Pathipati_Resume.pdf"
 GENERATED_CV_FILE = "Sunilkumar_Pathipati_CV.pdf"
 
@@ -428,21 +428,18 @@ def publish_site(data: dict, pdf_path: Path, seed: dict) -> None:
     site_public = SITE_DIR / "public"
     if not site_public.is_dir():
         return
+    dest_resume = site_public / SITE_RESUME_FILE
+    shutil.copy2(pdf_path, dest_resume)
     dest_cv = site_public / GENERATED_CV_FILE
     shutil.copy2(pdf_path, dest_cv)
-    resume_dest = site_public / SITE_RESUME_FILE
-    if not resume_dest.is_file():
-        print(f"Warning: {resume_dest} is missing; recruiter downloads will 404 until the full resume is added.")
-    elif resume_dest.stat().st_size < 50_000:
-        print(f"Warning: {resume_dest} looks too small for a full recruiter resume.")
     payload = dict(data)
     payload["resumeFile"] = SITE_RESUME_FILE
     payload["projects"] = curated_projects(seed, data)
     live_path = site_public / "live.json"
     live_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Updated site data: {live_path}")
-    print(f"Updated generated CV artifact: {dest_cv}")
-    print(f"Recruiter resumeFile stays {SITE_RESUME_FILE} (not overwritten by the generated CV)")
+    print(f"Published recruiter resume: {dest_resume}")
+    print(f"Mirrored generated artifact: {dest_cv}")
 
 
 def resolve_pdf(
@@ -537,7 +534,7 @@ def main() -> int:
     )
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    named = OUT_DIR / GENERATED_CV_FILE
+    named = OUT_DIR / SITE_RESUME_FILE
     pdf_path = write_pdf(data, OUT_DIR / "cv.tex", named)
     print(f"CV ready: {pdf_path}")
     publish_site(data, pdf_path, seed)

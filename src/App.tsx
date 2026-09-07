@@ -13,6 +13,7 @@ import { CursorRipple } from './components/fx/CursorRipple'
 import { Intro } from './components/fx/Intro'
 import { ScrollProgress } from './components/fx/ScrollProgress'
 import { SmoothScroll } from './components/fx/SmoothScroll'
+import { GsapScroll } from './components/fx/GsapScroll'
 import { SiteProvider, useSite } from './data/SiteProvider'
 
 function Shell() {
@@ -26,6 +27,7 @@ function Shell() {
       <CursorRipple />
       <ScrollProgress />
       <SmoothScroll />
+      <GsapScroll />
       <HashScroll />
       <a href="#main" className="skip-link">
         Skip to content

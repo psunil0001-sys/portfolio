@@ -7,7 +7,7 @@
   "phone": "+91-8686877689",
   "linkedin": "linkedin.com/in/sunilkumar-pathipati-206098bb",
   "github": "github.com/psunil0001-sys",
-  "summary": "Lead Engineer with 9+ years of experience in automotive software engineering, embedded systems, artificial intelligence, and application development. Expertise in Python, C, AUTOSAR, machine learning, and Agile development practices. Experienced in developing safety-critical automotive solutions, including anti-lock braking systems for eBikes and two-wheelers, with strong exposure to ISO 26262 functional safety environments. Skilled in Python-based automation frameworks, local LLM tooling, intelligent testing platforms, software integration, verification and validation, release management, and engineering productivity improvement.",
+  "summary": "Lead Engineer with 9+ years in automotive software, embedded systems, and applied AI. Works in Python and C on AUTOSAR programs, machine-learning workflows, and Agile delivery. Safety-critical experience includes anti-lock braking software for eBikes and two-wheelers in ISO 26262 environments. Currently building Python automation and on-prem LLM tooling for infotainment test, alongside software integration, verification and validation, release management, and engineering productivity.",
   "skill_groups": [
     {
       "label": "Languages",
@@ -84,11 +84,11 @@
       "location": "Bengaluru, Karnataka, India",
       "client": "Polestar",
       "bullets": [
-        "Developing Python-based automation frameworks and local LLM solutions using llama.cpp for automotive infotainment testing and validation.",
-        "Building AI-powered tools for test generation, log analysis, defect investigation, knowledge retrieval, and engineering productivity.",
-        "Designing and maintaining GitHub Actions workflows, Git-based development processes, and automation utilities to streamline testing, build, and release activities.",
-        "Leveraging Python, Bash scripting, and JFrog Artifactory to improve software quality, engineering efficiency, and validation workflows.",
-        "Supporting secure on-premises AI tooling and local model deployment for automotive software testing environments."
+        "Lead Python automation and local llama.cpp LLM tooling for Polestar infotainment test and validation.",
+        "Build AI tools for test generation, log analysis, defect investigation, knowledge retrieval, and engineering productivity.",
+        "Own GitHub Actions workflows and Git-based development processes that streamline test, build, and release work.",
+        "Use Python, Bash, and JFrog Artifactory to raise software quality and shorten validation cycles.",
+        "Deploy and operate on-premises LLM tooling so automotive test environments stay off the public cloud."
       ]
     },
     {
@@ -165,37 +165,36 @@
   "projects": [
     {
       "slug": "llm-junit4",
-      "title": "LLM JUnit4 Unittest Generator",
+      "title": "LLM JUnit4 Test Generator",
       "featured": true,
       "freelance": true,
       "stack": "Python",
-      "blurb": "Agentic Kotlin/JUnit4 test generator for Android Gradle modules. A Google ADK planner/coder/fixer pipeline drafts tests, runs them through Gradle and Kover (with optional JaCoCo), then repairs only the generated test code until the selected acceptance tasks pass — backed by a local llama.cpp server or a remote OpenAI-compatible vLLM endpoint.",
+      "blurb": "Local LLM pipeline that drafts and repairs Kotlin/JUnit4 unit tests for Android Gradle modules. A Google ADK planner, coder, and fixer loop runs Gradle and Kover (optional JaCoCo) and edits only generated tests until selected tasks pass, using llama.cpp on-prem or a remote OpenAI-compatible vLLM endpoint.",
       "tags": [
         "Python",
-        "ADK",
-        "llama.cpp",
-        "vLLM",
+        "Kotlin",
+        "JUnit4",
         "Gradle",
         "Kover",
-        "Kotlin",
-        "JUnit4"
+        "llama.cpp",
+        "vLLM",
+        "ADK"
       ],
       "url": "https://github.com/psunil0001-sys/LLM-Junit4-Unittest-Generator"
     },
     {
       "slug": "revops",
-      "title": "RevOps",
+      "title": "RevOps Research Desk",
       "featured": false,
       "freelance": true,
       "stack": "Python",
-      "blurb": "Multi-fund portfolio tracker in Streamlit — mutual funds, ULIPs, and NPS schemes pulled from mfapi.in and local CSVs — with a manager-orchestrated research desk of five analysts (Fundamentals, Sentiment, News, Technical, Policy), Chroma memory, and bootstrap plus local-LLM-refined 60-day NAV scenario forecasts.",
+      "blurb": "Streamlit workspace for mutual funds, ULIPs, and NPS holdings from mfapi.in and local CSVs. A manager coordinates five analysts (fundamentals, sentiment, news, technical, policy), stores notes in ChromaDB, and produces 60-day NAV scenarios with bootstrap resampling and a local LLM.",
       "tags": [
+        "Python",
         "Streamlit",
-        "Multi-Agent",
+        "Multi-agent",
         "ChromaDB",
-        "llama.cpp",
-        "Bootstrap",
-        "Python"
+        "llama.cpp"
       ],
       "url": "https://github.com/psunil0001-sys/revops"
     },
@@ -205,28 +204,26 @@
       "featured": false,
       "freelance": true,
       "stack": "Dart",
-      "blurb": "Cross-platform Flutter calorie tracker built on the latest stable Flutter. Structured layer split (core / presentation / routes / theme / widgets), a full light-and-dark theming system, typed app routing, and reusable widgets for a responsive mobile experience.",
+      "blurb": "Cross-platform Flutter calorie tracker with a layered structure (core, presentation, routes, theme, widgets), typed navigation, and a light/dark theme system for a consistent mobile UI.",
       "tags": [
         "Flutter",
         "Dart",
-        "Theming",
-        "Routing",
         "Mobile"
       ],
       "url": "https://github.com/psunil0001-sys/calorietrack"
     },
     {
       "slug": "dag-example",
-      "title": "DAG Example",
+      "title": "Airflow TaskFlow ETL",
       "featured": false,
       "freelance": true,
       "stack": "Python",
-      "blurb": "Astronomer/Airflow project with an example TaskFlow ETL DAG. Queries live astronaut data, then uses dynamic task mapping to process each result — a compact walkthrough of local Airflow orchestration.",
+      "blurb": "Astronomer / Apache Airflow example of TaskFlow ETL: pull live astronaut data, then process each result with dynamic task mapping for local orchestration.",
       "tags": [
+        "Python",
         "Airflow",
         "Astronomer",
-        "ETL",
-        "Python"
+        "ETL"
       ],
       "url": "https://github.com/psunil0001-sys/DAG-example"
     }

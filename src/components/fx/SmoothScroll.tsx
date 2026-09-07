@@ -8,8 +8,7 @@ import { useReducedMotion } from 'framer-motion'
  * - Takes over wheel/touch scrolling with a spring-like easing so the whole page feels fluid.
  * - Intercepts in-page anchor links (nav, "Contact", "Scroll" cue) and glides to them via
  *   lenis.scrollTo instead of a native jump.
- * - Syncs to requestAnimationFrame so it stays in step with framer-motion's useScroll hooks
- *   (hero parallax, section skew, scroll progress) and the fixed nav/cursor layers.
+ * - Syncs Lenis to GSAP ScrollTrigger so section reveals stay aligned with smooth scroll.
  * - Fully disabled when the user prefers reduced motion, falling back to native scrolling.
  */
 export function SmoothScroll() {
@@ -26,6 +25,14 @@ export function SmoothScroll() {
       lerp: 0.09,
       wheelMultiplier: 1,
       touchMultiplier: 1.4,
+    })
+
+    let cancelled = false
+    let detachScroll: (() => void) | undefined
+    void import('../../lib/gsap').then(({ registerGsap }) => {
+      if (cancelled) return
+      const { ScrollTrigger } = registerGsap()
+      detachScroll = lenis.on('scroll', () => ScrollTrigger.update())
     })
 
     let rafId = 0
@@ -49,8 +56,10 @@ export function SmoothScroll() {
     document.addEventListener('click', onClick)
 
     return () => {
+      cancelled = true
       cancelAnimationFrame(rafId)
       document.removeEventListener('click', onClick)
+      detachScroll?.()
       lenis.destroy()
       document.documentElement.style.scrollBehavior = previous
     }

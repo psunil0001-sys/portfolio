@@ -37,11 +37,10 @@ python linkedin_cv.py --no-open --skip-github
 
 ## Outputs
 
-- `out/cv.tex`, `out/Sunilkumar_Pathipati_CV.pdf`
+- `out/cv.tex`, `out/Sunilkumar_Pathipati_Resume.pdf` (ATS single-column layout)
 - `../public/live.json` with `resumeFile` set to `Sunilkumar_Pathipati_Resume.pdf`
-- `../public/Sunilkumar_Pathipati_CV.pdf` (generated artifact; not the recruiter download)
-
-The full recruiter resume, `../public/Sunilkumar_Pathipati_Resume.pdf`, is not overwritten by refresh.
+- `../public/Sunilkumar_Pathipati_Resume.pdf` (recruiter download; regenerated on refresh)
+- `../public/Sunilkumar_Pathipati_CV.pdf` (same PDF, kept as a pipeline artifact name)
 
 ## LinkedIn inbox
 

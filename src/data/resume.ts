@@ -14,8 +14,15 @@ export const profile = {
   /** Total professional projects delivered across all roles (most are private, so not all are listed). */
   projectCount: 9,
   summary:
-    'Lead Engineer with 9+ years of experience in automotive software engineering, embedded systems, artificial intelligence, and application development. Expertise in Python, C, AUTOSAR, machine learning, and Agile development practices. Experienced in developing safety-critical automotive solutions, including anti-lock braking systems for eBikes and two-wheelers, with strong exposure to ISO 26262 functional safety environments. Skilled in Python-based automation frameworks, local LLM tooling, intelligent testing platforms, software integration, verification and validation, release management, and engineering productivity improvement.',
+    'Lead Engineer with 9+ years in automotive software, embedded systems, and applied AI. Works in Python and C on AUTOSAR programs, machine-learning workflows, and Agile delivery. Safety-critical experience includes anti-lock braking software for eBikes and two-wheelers in ISO 26262 environments. Currently building Python automation and on-prem LLM tooling for infotainment test, alongside software integration, verification and validation, release management, and engineering productivity.',
 }
+
+/** Web About copy — same facts as summary, split for reading. */
+export const aboutParagraphs = [
+  'Lead Engineer with 9+ years in automotive software, embedded systems, and applied AI. Core tools are Python and C, used on AUTOSAR programs, machine-learning workflows, and Agile teams.',
+  'Safety-critical work includes anti-lock braking software for eBikes and two-wheelers, with ISO 26262 functional-safety process exposure.',
+  'Current focus is Python automation and on-prem LLM tooling for infotainment test, plus integration, verification and validation, release management, and engineering productivity.',
+]
 
 export const skillGroups = [
   {
@@ -73,11 +80,11 @@ export const experience: Role[] = [
     location: 'Bengaluru, Karnataka, India',
     client: 'Polestar',
     bullets: [
-      'Developing Python-based automation frameworks and local LLM solutions using llama.cpp for automotive infotainment testing and validation.',
-      'Building AI-powered tools for test generation, log analysis, defect investigation, knowledge retrieval, and engineering productivity.',
-      'Designing and maintaining GitHub Actions workflows, Git-based development processes, and automation utilities to streamline testing, build, and release activities.',
-      'Leveraging Python, Bash scripting, and JFrog Artifactory to improve software quality, engineering efficiency, and validation workflows.',
-      'Supporting secure on-premises AI tooling and local model deployment for automotive software testing environments.',
+      'Lead Python automation and local llama.cpp LLM tooling for Polestar infotainment test and validation.',
+      'Build AI tools for test generation, log analysis, defect investigation, knowledge retrieval, and engineering productivity.',
+      'Own GitHub Actions workflows and Git-based development processes that streamline test, build, and release work.',
+      'Use Python, Bash, and JFrog Artifactory to raise software quality and shorten validation cycles.',
+      'Deploy and operate on-premises LLM tooling so automotive test environments stay off the public cloud.',
     ],
   },
   {

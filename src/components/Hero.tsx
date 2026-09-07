@@ -11,9 +11,9 @@ import { SplitText } from './fx/SplitText'
 import { WordReveal } from './fx/WordReveal'
 
 const signals = [
-  { n: '01', text: 'Polestar infotainment AI tooling' },
-  { n: '02', text: 'ISO 26262 ABS software' },
-  { n: '03', text: 'India + Germany delivery' },
+  { n: '01', text: 'On-prem LLM tooling for Polestar infotainment test' },
+  { n: '02', text: 'ISO 26262 ABS software for eBike and two-wheeler programs' },
+  { n: '03', text: 'Automotive delivery across India and Germany' },
 ]
 
 const INTRO_DELAY = 1.15
@@ -181,7 +181,7 @@ export function Hero() {
           style={reduce ? undefined : { y: asideLift }}
           className="hidden border-l border-teal/30 pl-6 lg:block"
         >
-          <p className="font-display text-[0.68rem] tracking-[0.28em] text-muted uppercase">Signal</p>
+          <p className="font-display text-[0.68rem] tracking-[0.28em] text-muted uppercase">Highlights</p>
           <ul className="mt-5 space-y-5 text-sm">
             {signals.map((item, index) => (
               <motion.li
