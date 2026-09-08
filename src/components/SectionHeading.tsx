@@ -29,18 +29,18 @@ export function SectionHeading({ index, title, children, once = false }: Props) 
     <div className="mb-10 flex flex-col gap-3 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <motion.p
-          initial={reduce ? false : { opacity: 0, x: -14 }}
+          initial={reduce || once ? false : { opacity: 0, x: -14 }}
           {...(once
-            ? { animate: { opacity: 1, x: 0 } }
+            ? {}
             : { whileInView: { opacity: 1, x: 0 }, viewport })}
           transition={{ duration: 0.55, ease: easeOutExpo }}
           className="mb-2 flex items-center gap-3 font-display text-[0.72rem] font-semibold tracking-[0.28em] text-amber uppercase"
         >
           <motion.span
             aria-hidden="true"
-            initial={reduce ? false : { scaleX: 0 }}
+            initial={reduce || once ? false : { scaleX: 0 }}
             {...(once
-              ? { animate: { scaleX: 1 } }
+              ? {}
               : { whileInView: { scaleX: 1 }, viewport })}
             transition={{ duration: 0.7, ease: easeOutExpo }}
             className="block h-px w-8 origin-left bg-amber"
@@ -52,14 +52,14 @@ export function SectionHeading({ index, title, children, once = false }: Props) 
           style={reduce ? undefined : { skewX }}
           className="font-display text-3xl font-bold tracking-tight text-paper will-change-transform sm:text-4xl"
         >
-          <SplitText text={title} inView={!once} once={once} stagger={0.028} />
+          {once ? title : <SplitText text={title} inView once={once} stagger={0.028} />}
         </motion.h2>
       </div>
       {children ? (
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 12 }}
+          initial={reduce || once ? false : { opacity: 0, y: 12 }}
           {...(once
-            ? { animate: { opacity: 1, y: 0 } }
+            ? {}
             : { whileInView: { opacity: 1, y: 0 }, viewport })}
           transition={{ duration: 0.6, delay: 0.1, ease: easeOutExpo }}
           className="max-w-md text-sm text-muted sm:text-right"
