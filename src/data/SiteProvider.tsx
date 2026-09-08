@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { projects as fallbackProjects, type Project } from './projects'
+import { fetchGithubProjects } from '../lib/github'
+import { mergeProjects, projects as fallbackProjects, type Project } from './projects'
 import {
   certifications as fallbackCerts,
   education as fallbackEducation,
@@ -43,6 +44,7 @@ type LiveFile = {
   experience?: Role[]
   education?: typeof fallbackEducation
   certifications?: string[]
+  projects?: Project[]
 }
 
 /** live.json comes from the LaTeX pipeline, which writes date ranges as `--`. */
@@ -61,6 +63,18 @@ function splitName(name: string) {
 function recruiterResumeFile(value?: string) {
   if (!value || value === STUB_RESUME_FILE) return fallbackProfile.resumeFile
   return value
+}
+
+function isProject(value: unknown): value is Project {
+  if (!value || typeof value !== 'object') return false
+  const project = value as Project
+  return Boolean(
+    project.slug &&
+      project.title &&
+      project.blurb &&
+      project.url &&
+      Array.isArray(project.tags),
+  )
 }
 
 function mapLive(live: LiveFile): Partial<SiteData> {
@@ -129,6 +143,12 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         .catch(() => null)
       if (cancelled) return
       const mapped = live ? mapLive(live) : {}
+      const liveProjects = Array.isArray(live?.projects) ? live.projects.filter(isProject) : []
+      let remote = liveProjects
+      if (!remote.length) {
+        remote = await fetchGithubProjects().catch(() => [] as Project[])
+        if (cancelled) return
+      }
       setData({
         profile: mapped.profile ?? fallbackProfile,
         skillGroups: mapped.skillGroups ?? fallbackSkills,
@@ -136,8 +156,7 @@ export function SiteProvider({ children }: { children: ReactNode }) {
         experience: mapped.experience ?? fallbackExperience,
         education: mapped.education ?? fallbackEducation,
         certifications: mapped.certifications ?? fallbackCerts,
-        // Curated list in src/data/projects.ts — never replace from GitHub or live.json scrapes.
-        projects: fallbackProjects,
+        projects: mergeProjects(remote, fallbackProjects),
       })
       setLoading(false)
     }

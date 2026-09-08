@@ -51,4 +51,83 @@ export const projects: Project[] = [
     tags: ['Python', 'Airflow', 'Astronomer', 'ETL'],
     url: 'https://github.com/psunil0001-sys/DAG-example',
   },
+  {
+    slug: 'portfolio',
+    title: 'Recruiter Portfolio',
+    freelance: false,
+    stack: 'TypeScript',
+    blurb:
+      'Recruiter-facing site and ATS resume pipeline: React and Vite on GitHub Pages, with a Python helper that rebuilds live project cards and a single-column resume from LinkedIn PDF exports and public GitHub repositories.',
+    tags: ['TypeScript', 'React', 'Vite', 'GitHub Pages', 'Python'],
+    url: 'https://github.com/psunil0001-sys/portfolio',
+  },
 ]
+
+function normalizeKey(value: string) {
+  return value.trim().toLowerCase().replace(/\.git$/i, '').replace(/[-_]/g, '')
+}
+
+export function projectMatchKeys(project: Pick<Project, 'slug' | 'url'>): Set<string> {
+  const keys = new Set<string>()
+  if (project.slug) {
+    keys.add(project.slug.toLowerCase())
+    keys.add(normalizeKey(project.slug))
+  }
+  const match = project.url.match(/github\.com\/[^/]+\/([^/#?]+)/i)
+  if (match) {
+    keys.add(match[1].toLowerCase().replace(/\.git$/i, ''))
+    keys.add(normalizeKey(match[1]))
+  }
+  return keys
+}
+
+function keysOverlap(left: Set<string>, right: Set<string>) {
+  for (const key of left) {
+    if (right.has(key)) return true
+  }
+  return false
+}
+
+/** Remote GitHub/live.json catalog, with curated title/blurb/tags/featured/freelance/stack winning on match. */
+export function mergeProjects(remote: Project[], curated: Project[] = projects): Project[] {
+  const unused = [...curated]
+  const merged: Project[] = []
+
+  for (const repo of remote) {
+    const repoKeys = projectMatchKeys(repo)
+    const index = unused.findIndex((item) => keysOverlap(repoKeys, projectMatchKeys(item)))
+    const match = index >= 0 ? unused.splice(index, 1)[0] : undefined
+    if (match) {
+      merged.push({
+        ...repo,
+        slug: match.slug || repo.slug,
+        url: match.url || repo.url,
+        title: match.title,
+        blurb: match.blurb,
+        tags: match.tags,
+        featured: match.featured === true,
+        freelance: match.freelance,
+        stack: match.stack,
+      })
+    } else {
+      merged.push({ ...repo, featured: false })
+    }
+  }
+
+  for (const leftover of unused) {
+    merged.push({ ...leftover, featured: leftover.featured === true })
+  }
+
+  return merged.sort((a, b) => {
+    const featuredDelta = Number(Boolean(b.featured)) - Number(Boolean(a.featured))
+    if (featuredDelta) return featuredDelta
+    const indexOf = (project: Project) => {
+      const keys = projectMatchKeys(project)
+      const idx = curated.findIndex((item) => keysOverlap(keys, projectMatchKeys(item)))
+      return idx >= 0 ? idx : curated.length
+    }
+    const orderDelta = indexOf(a) - indexOf(b)
+    if (orderDelta) return orderDelta
+    return a.title.localeCompare(b.title)
+  })
+}

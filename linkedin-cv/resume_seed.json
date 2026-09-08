@@ -134,16 +134,26 @@
       "tags": ["Flutter", "Dart", "Mobile"],
       "url": "https://github.com/psunil0001-sys/calorietrack"
     },
-    {
-      "slug": "dag-example",
-      "title": "Airflow TaskFlow ETL",
-      "featured": false,
-      "freelance": true,
-      "stack": "Python",
-      "blurb": "Astronomer / Apache Airflow example of TaskFlow ETL: pull live astronaut data, then process each result with dynamic task mapping for local orchestration.",
-      "tags": ["Python", "Airflow", "Astronomer", "ETL"],
-      "url": "https://github.com/psunil0001-sys/DAG-example"
-    }
+      {
+        "slug": "dag-example",
+        "title": "Airflow TaskFlow ETL",
+        "featured": false,
+        "freelance": true,
+        "stack": "Python",
+        "blurb": "Astronomer / Apache Airflow example of TaskFlow ETL: pull live astronaut data, then process each result with dynamic task mapping for local orchestration.",
+        "tags": ["Python", "Airflow", "Astronomer", "ETL"],
+        "url": "https://github.com/psunil0001-sys/DAG-example"
+      },
+      {
+        "slug": "portfolio",
+        "title": "Recruiter Portfolio",
+        "featured": false,
+        "freelance": false,
+        "stack": "TypeScript",
+        "blurb": "Recruiter-facing site and ATS resume pipeline: React and Vite on GitHub Pages, with a Python helper that rebuilds live project cards and a single-column resume from LinkedIn PDF exports and public GitHub repositories.",
+        "tags": ["TypeScript", "React", "Vite", "GitHub Pages", "Python"],
+        "url": "https://github.com/psunil0001-sys/portfolio"
+      }
   ],
   "resumeFile": "Sunilkumar_Pathipati_Resume.pdf"
 }

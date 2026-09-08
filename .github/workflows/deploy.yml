@@ -25,7 +25,9 @@ jobs:
       - name: Install CV helper
         run: pip install -r linkedin-cv/requirements.txt
       - name: Build CV from LinkedIn data
-        run: python linkedin-cv/linkedin_cv.py --no-open --skip-github
+        run: python linkedin-cv/linkedin_cv.py --no-open
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22

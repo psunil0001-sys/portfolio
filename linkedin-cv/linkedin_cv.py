@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -62,10 +63,64 @@ def escape_tree(node):
     return node
 
 
-def github_get(url: str):
-    request = urllib.request.Request(url, headers={"User-Agent": "sunilkumar-portfolio-sync"})
+def github_headers() -> dict[str, str]:
+    headers = {
+        "User-Agent": "sunilkumar-portfolio-sync",
+        "Accept": "application/vnd.github+json",
+    }
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return headers
+
+
+def github_get(url: str, *, raw: bool = False) -> tuple[str, str | None]:
+    headers = {"User-Agent": "sunilkumar-portfolio-sync"} if raw else github_headers()
+    request = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(request, timeout=20) as response:
-        return response.read().decode("utf-8", errors="replace")
+        body = response.read().decode("utf-8", errors="replace")
+        return body, response.headers.get("Link")
+
+
+def next_github_url(link_header: str | None) -> str | None:
+    if not link_header:
+        return None
+    for part in link_header.split(","):
+        section = part.strip()
+        if 'rel="next"' in section:
+            start = section.find("<")
+            end = section.find(">")
+            if start >= 0 and end > start:
+                return section[start + 1 : end]
+    return None
+
+
+def title_from_repo(name: str) -> str:
+    if "-" in name and any(ch.isupper() for ch in name):
+        return name.replace("-", " ")
+    return " ".join(part[:1].upper() + part[1:] for part in re.split(r"[-_]", name) if part)
+
+
+BOILERPLATE_LINE = re.compile(
+    r"^(welcome to\b|this project was generated\b|your astro project\b|"
+    r"this readme describes\b|getting started\b|prerequisites\b|"
+    r"the astronomer cli\b|to report a bug\b|built with\b|powered by\b|"
+    r"this command will spin up\b|note:\s+if you already have\b|"
+    r"for more on how this dag\b|start airflow on your local\b|"
+    r"a modern flutter-based\b)",
+    re.I,
+)
+
+
+def is_boilerplate_text(plain: str) -> bool:
+    compact = re.sub(r"\s+", " ", plain).strip()
+    if not compact:
+        return True
+    if BOILERPLATE_LINE.search(compact):
+        return True
+    if compact.endswith("!") and compact.lower().startswith("welcome"):
+        return True
+    return False
 
 
 def blurb_from_readme(markdown: str, fallback: str) -> str:
@@ -73,34 +128,68 @@ def blurb_from_readme(markdown: str, fallback: str) -> str:
     chunks = []
     for line in text.splitlines():
         line = line.strip()
-        if not line or line.startswith("#") or line.startswith("!") or line.startswith("|"):
+        if not line or line.startswith(("#", "!", "|", ">")):
             continue
-        plain = re.sub(r"[*_`\[\]]", "", line)
+        if re.fullmatch(r"[=\-*._\s]+", line):
+            continue
+        plain = re.sub(r"[*`\[\]]", "", line)
         plain = re.sub(r"\(https?://[^)]+\)", "", plain)
-        if len(plain) > 40:
-            chunks.append(plain)
+        plain = re.sub(r"^[-*+]\s+", "", plain)
+        plain = re.sub(r"\s+", " ", plain).strip()
+        if len(plain) <= 40 or is_boilerplate_text(plain):
+            continue
+        chunks.append(plain)
         if len(" ".join(chunks)) > 220:
             break
     merged = re.sub(r"\s+", " ", " ".join(chunks)).strip()
-    return (merged[:360] if merged else fallback)
+    if merged and not is_boilerplate_text(merged):
+        return merged[:360]
+    return fallback
+
+
+def professional_fallback(title: str, language: str | None) -> str:
+    if language:
+        return f"{title} — {language} source repository."
+    return f"{title} source repository."
+
+
+def fetch_github_repos() -> list[dict]:
+    repos: list[dict] = []
+    url = (
+        f"https://api.github.com/users/{GITHUB_USER}/repos"
+        "?type=owner&sort=pushed&per_page=100"
+    )
+    while url:
+        raw, link = github_get(url)
+        page = json.loads(raw)
+        if isinstance(page, list):
+            repos.extend(page)
+        url = next_github_url(link)
+    return repos
 
 
 def fetch_github_projects() -> list[dict]:
-    raw = github_get(f"https://api.github.com/users/{GITHUB_USER}/repos?sort=pushed&per_page=30")
-    repos = json.loads(raw)
     projects = []
-    for repo in repos:
-        if repo.get("fork"):
+    for repo in fetch_github_repos():
+        if repo.get("fork") or repo.get("private"):
             continue
         name = repo["name"]
+        title = title_from_repo(name)
         branch = repo.get("default_branch") or "main"
-        blurb = repo.get("description") or f"{name} freelance project."
+        description = (repo.get("description") or "").strip()
+        fallback = (
+            description
+            if description and not is_boilerplate_text(description)
+            else professional_fallback(title, repo.get("language"))
+        )
+        blurb = fallback
         for filename in ("README.md", "Readme.md", "readme.md"):
             try:
-                markdown = github_get(
-                    f"https://raw.githubusercontent.com/{GITHUB_USER}/{name}/{branch}/{filename}"
+                markdown, _ = github_get(
+                    f"https://raw.githubusercontent.com/{GITHUB_USER}/{name}/{branch}/{filename}",
+                    raw=True,
                 )
-                blurb = blurb_from_readme(markdown, blurb)
+                blurb = blurb_from_readme(markdown, fallback)
                 break
             except urllib.error.HTTPError:
                 continue
@@ -111,9 +200,9 @@ def fetch_github_projects() -> list[dict]:
         projects.append(
             {
                 "slug": name,
-                "title": name.replace("-", " "),
-                "featured": len(projects) == 0,
-                "freelance": True,
+                "title": title,
+                "featured": False,
+                "freelance": False,
                 "blurb": blurb,
                 "tags": tags[:8],
                 "url": repo["html_url"],
@@ -121,6 +210,71 @@ def fetch_github_projects() -> list[dict]:
             }
         )
     return projects
+
+
+def project_keys(project: dict) -> set[str]:
+    keys: set[str] = set()
+    slug = str(project.get("slug") or "").strip()
+    if slug:
+        lowered = slug.lower()
+        keys.add(lowered)
+        keys.add(re.sub(r"[-_]", "", lowered))
+    url = str(project.get("url") or "")
+    match = re.search(r"github\.com/[^/]+/([^/#?]+)", url, re.I)
+    if match:
+        repo = match.group(1).removesuffix(".git").lower()
+        keys.add(repo)
+        keys.add(re.sub(r"[-_]", "", repo))
+    return {key for key in keys if key}
+
+
+CURATED_OVERRIDE_FIELDS = ("title", "blurb", "tags", "featured", "freelance", "stack")
+
+
+def merge_projects(github_projects: list[dict], curated: list[dict]) -> list[dict]:
+    """GitHub public non-forks are the catalog; curated presentation fields win on match."""
+    unused = list(curated)
+    merged: list[dict] = []
+
+    def take_curated(item: dict) -> dict | None:
+        keys = project_keys(item)
+        for index, candidate in enumerate(unused):
+            if keys & project_keys(candidate):
+                return unused.pop(index)
+        return None
+
+    for repo in github_projects:
+        match = take_curated(repo)
+        item = dict(repo)
+        if match:
+            item["slug"] = match.get("slug") or item.get("slug")
+            for field in CURATED_OVERRIDE_FIELDS:
+                if field in match and match[field] is not None:
+                    item[field] = deepcopy(match[field])
+            item["featured"] = bool(match.get("featured"))
+            if match.get("url"):
+                item["url"] = match["url"]
+        else:
+            item["featured"] = False
+        merged.append(item)
+
+    for leftover in unused:
+        item = deepcopy(leftover)
+        item["featured"] = bool(item.get("featured"))
+        merged.append(item)
+
+    curated_index = [(project_keys(item), index) for index, item in enumerate(curated)]
+
+    def rank(project: dict) -> tuple:
+        keys = project_keys(project)
+        position = len(curated)
+        for candidate_keys, index in curated_index:
+            if keys & candidate_keys:
+                position = index
+                break
+        return (0 if project.get("featured") else 1, position, str(project.get("title") or "").lower())
+
+    return sorted(merged, key=rank)
 
 
 def linkedin_handle(data: dict) -> str:
@@ -417,14 +571,14 @@ def write_pdf(data: dict, tex_path: Path, pdf_path: Path) -> Path:
 
 
 def curated_projects(seed: dict, data: dict) -> list:
-    """Site projects come from the seed allowlist, never a live GitHub scrape."""
+    """Curated presentation overrides (title, blurb, tags, featured, freelance, stack)."""
     projects = seed.get("projects")
     if projects:
         return deepcopy(projects)
-    return list(data.get("projects") or [])
+    return deepcopy(list(data.get("projects") or []))
 
 
-def publish_site(data: dict, pdf_path: Path, seed: dict) -> None:
+def publish_site(data: dict, pdf_path: Path) -> None:
     site_public = SITE_DIR / "public"
     if not site_public.is_dir():
         return
@@ -434,7 +588,6 @@ def publish_site(data: dict, pdf_path: Path, seed: dict) -> None:
     shutil.copy2(pdf_path, dest_cv)
     payload = dict(data)
     payload["resumeFile"] = SITE_RESUME_FILE
-    payload["projects"] = curated_projects(seed, data)
     live_path = site_public / "live.json"
     live_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Updated site data: {live_path}")
@@ -480,12 +633,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--skip-github",
         action="store_true",
-        help="Do not fetch GitHub repos (default). Site projects stay curated either way.",
+        help="Do not fetch GitHub repos; use curated seed projects only.",
     )
     parser.add_argument(
         "--github",
         action="store_true",
-        help="Opt in: fetch public repos for the generated CV only. Never overwrites site curated projects or resumeFile.",
+        help="Fetch public non-fork repos (default) and merge curated overrides into live.json.",
     )
     return parser.parse_args()
 
@@ -495,11 +648,10 @@ def build_base_data(
     pdf: Path | None = None,
     seed_only: bool = False,
     skip_github: bool = False,
-    fetch_github: bool = False,
     no_open: bool = True,
     watch: bool = False,
     timeout: int = 180,
-) -> tuple[dict, dict]:
+) -> dict:
     seed = load_seed()
     pdf_path = resolve_pdf(
         pdf=pdf, seed_only=seed_only, no_open=no_open, watch=watch, timeout=timeout
@@ -508,26 +660,27 @@ def build_base_data(
     if pdf_path:
         print(f"Reading {pdf_path}")
         data = parse_linkedin(extract_pdf_text(pdf_path), seed)
-    data["projects"] = curated_projects(seed, data)
-    if fetch_github and not skip_github:
-        try:
-            data["projects"] = fetch_github_projects()
-            print(f"Loaded {len(data['projects'])} GitHub projects for the generated CV only")
-        except Exception as exc:
-            print(f"GitHub fetch failed ({exc}); keeping curated projects")
-            data["projects"] = curated_projects(seed, data)
-    else:
+    curated = curated_projects(seed, data)
+    if skip_github:
         print("Skipping GitHub project fetch; using curated projects from resume_seed.json")
-    return data, seed
+        data["projects"] = curated
+        return data
+    try:
+        github_projects = fetch_github_projects()
+        data["projects"] = merge_projects(github_projects, curated)
+        print(f"Loaded {len(github_projects)} GitHub repos; published {len(data['projects'])} projects")
+    except Exception as exc:
+        print(f"GitHub fetch failed ({exc}); keeping curated projects")
+        data["projects"] = curated
+    return data
 
 
 def main() -> int:
     args = parse_args()
-    data, seed = build_base_data(
+    data = build_base_data(
         pdf=args.pdf,
         seed_only=args.seed_only,
         skip_github=args.skip_github,
-        fetch_github=args.github,
         no_open=args.no_open,
         watch=args.watch,
         timeout=args.timeout,
@@ -537,7 +690,7 @@ def main() -> int:
     named = OUT_DIR / SITE_RESUME_FILE
     pdf_path = write_pdf(data, OUT_DIR / "cv.tex", named)
     print(f"CV ready: {pdf_path}")
-    publish_site(data, pdf_path, seed)
+    publish_site(data, pdf_path)
     return 0
 
 

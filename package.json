@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173",
     "build": "tsc -b && vite build",
-    "refresh": "cd linkedin-cv && (test -x .venv/bin/python || (python3 -m venv .venv && .venv/bin/pip install -r requirements.txt)) && .venv/bin/python linkedin_cv.py --no-open --skip-github",
+    "refresh": "cd linkedin-cv && ((test -x .venv/bin/python || (python3 -m venv .venv && .venv/bin/pip install -r requirements.txt)) && .venv/bin/python linkedin_cv.py --no-open) || python3 linkedin_cv.py --no-open",
     "sync": "npm run refresh",
     "lint": "oxlint",
     "preview": "vite preview"
