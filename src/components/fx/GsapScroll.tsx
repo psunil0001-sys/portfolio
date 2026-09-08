@@ -20,8 +20,9 @@ export function GsapScroll() {
       const sections = Array.from(document.querySelectorAll<HTMLElement>('main section')).filter(
         (section) => section.id !== 'top',
       )
-      tweens = sections.map((section) =>
-        gsap.fromTo(
+      tweens = sections.map((section, index) => {
+        const isLast = index === sections.length - 1
+        return gsap.fromTo(
           section,
           { autoAlpha: 0, y: 28 },
           {
@@ -31,12 +32,15 @@ export function GsapScroll() {
             ease: 'power2.out',
             scrollTrigger: {
               trigger: section,
-              start: 'top 84%',
-              toggleActions: 'play reverse play reverse',
+              start: isLast ? 'top 95%' : 'top 84%',
+              // Last section often cannot scroll past its end, so reverse-on-leave
+              // would freeze it in the hidden state. Play once and keep it visible.
+              ...(isLast ? { end: 'max' } : {}),
+              toggleActions: isLast ? 'play none none none' : 'play reverse play reverse',
             },
           },
-        ),
-      )
+        )
+      })
       cleanupProps = () => gsap.set(sections, { clearProps: 'transform,opacity,visibility' })
     })
 

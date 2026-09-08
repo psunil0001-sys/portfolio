@@ -22,15 +22,15 @@ export function Contact() {
   return (
     <section id="contact" className="scroll-mt-24 px-5 py-20 sm:px-8 sm:py-28">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading index="06 / Signal" title="Let's talk">
+        <SectionHeading index="06 / Signal" title="Let's talk" once>
           Open to roles in Python, AI tooling, automotive software, and test framework leadership.
         </SectionHeading>
 
-        <ScrollReveal y={40} offset={['start 95%', 'start 45%']}>
+        <ScrollReveal y={40} offset={['start 95%', 'start 80%']}>
           <motion.div
             initial="hidden"
             whileInView="show"
-            viewport={{ once: false, amount: 0.25 }}
+            viewport={{ once: true, amount: 0.15 }}
             variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
             className="frame frame-inner glow-border grid gap-4 p-6 sm:grid-cols-2 sm:p-8"
           >
@@ -41,11 +41,10 @@ export function Contact() {
               target={item.href.startsWith('http') ? '_blank' : undefined}
               rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
               variants={{
-                hidden: reduce ? {} : { opacity: 0, y: 22, filter: 'blur(8px)' },
+                hidden: reduce ? {} : { opacity: 0, y: 22 },
                 show: {
                   opacity: 1,
                   y: 0,
-                  filter: 'blur(0px)',
                   transition: { duration: 0.6, ease: easeOutExpo },
                 },
               }}

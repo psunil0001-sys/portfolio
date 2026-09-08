@@ -8,10 +8,12 @@ type Props = {
   stagger?: number
   /** Animate on scroll into view instead of on mount. */
   inView?: boolean
+  /** When set with `inView`, do not reverse back to hidden after the first play. */
+  once?: boolean
 }
 
 /** Word-by-word mask reveal with a per-character lift. */
-export function SplitText({ text, className, delay = 0, stagger = 0.03, inView = false }: Props) {
+export function SplitText({ text, className, delay = 0, stagger = 0.03, inView = false, once = false }: Props) {
   const reduce = useReducedMotion()
   const words = text.split(' ')
 
@@ -20,7 +22,7 @@ export function SplitText({ text, className, delay = 0, stagger = 0.03, inView =
   }
 
   const animateProps = inView
-    ? { whileInView: 'show' as const, viewport: { once: false, amount: 0.6 } }
+    ? { whileInView: 'show' as const, viewport: { once, amount: 0.6 } }
     : { animate: 'show' as const }
 
   let index = -1

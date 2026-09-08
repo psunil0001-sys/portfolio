@@ -9,11 +9,14 @@ type Props = {
   index: string
   title: string
   children?: ReactNode
+  /** Last-on-page headings should not reverse back into a hidden/blurred state. */
+  once?: boolean
 }
 
-export function SectionHeading({ index, title, children }: Props) {
+export function SectionHeading({ index, title, children, once = false }: Props) {
   const reduce = useReducedMotion()
   const ref = useRef<HTMLHeadingElement>(null)
+  const viewport = { once, amount: 0.6 } as const
 
   const { scrollY } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const rawVelocity = useVelocity(scrollY)
@@ -28,7 +31,7 @@ export function SectionHeading({ index, title, children }: Props) {
         <motion.p
           initial={reduce ? false : { opacity: 0, x: -14 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: false, amount: 0.6 }}
+          viewport={viewport}
           transition={{ duration: 0.55, ease: easeOutExpo }}
           className="mb-2 flex items-center gap-3 font-display text-[0.72rem] font-semibold tracking-[0.28em] text-amber uppercase"
         >
@@ -36,7 +39,7 @@ export function SectionHeading({ index, title, children }: Props) {
             aria-hidden="true"
             initial={reduce ? false : { scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
-            viewport={{ once: false, amount: 0.6 }}
+            viewport={viewport}
             transition={{ duration: 0.7, ease: easeOutExpo }}
             className="block h-px w-8 origin-left bg-amber"
           />
@@ -47,14 +50,14 @@ export function SectionHeading({ index, title, children }: Props) {
           style={reduce ? undefined : { skewX }}
           className="font-display text-3xl font-bold tracking-tight text-paper will-change-transform sm:text-4xl"
         >
-          <SplitText text={title} inView stagger={0.028} />
+          <SplitText text={title} inView once={once} stagger={0.028} />
         </motion.h2>
       </div>
       {children ? (
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 12, filter: 'blur(6px)' }}
-          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          viewport={{ once: false, amount: 0.6 }}
+          initial={reduce ? false : { opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={viewport}
           transition={{ duration: 0.6, delay: 0.1, ease: easeOutExpo }}
           className="max-w-md text-sm text-muted sm:text-right"
         >
