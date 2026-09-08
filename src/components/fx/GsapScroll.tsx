@@ -20,28 +20,35 @@ export function GsapScroll() {
       const sections = Array.from(document.querySelectorAll<HTMLElement>('main section')).filter(
         (section) => section.id !== 'top',
       )
-      tweens = sections.map((section, index) => {
+      tweens = sections.flatMap((section, index) => {
         const isLast = index === sections.length - 1
-        return gsap.fromTo(
-          section,
-          { autoAlpha: 0, y: 28 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.65,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: section,
-              start: isLast ? 'top 95%' : 'top 84%',
-              // Last section often cannot scroll past its end, so reverse-on-leave
-              // would freeze it in the hidden state. Play once and keep it visible.
-              ...(isLast ? { end: 'max' } : {}),
-              toggleActions: isLast ? 'play none none none' : 'play reverse play reverse',
+        // Do not start the last section from autoAlpha 0. Its trigger start is
+        // often past max scroll, so the tween would never play and the block
+        // (Contact) would stay faded at the bottom of the page.
+        if (isLast) return []
+        return [
+          gsap.fromTo(
+            section,
+            { autoAlpha: 0, y: 28 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.65,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 84%',
+                toggleActions: 'play reverse play reverse',
+              },
             },
-          },
-        )
+          ),
+        ]
       })
-      cleanupProps = () => gsap.set(sections, { clearProps: 'transform,opacity,visibility' })
+      cleanupProps = () =>
+        gsap.set(
+          sections.filter((_, index) => index !== sections.length - 1),
+          { clearProps: 'transform,opacity,visibility' },
+        )
     })
 
     return () => {

@@ -3,7 +3,6 @@ import { useSite } from '../data/SiteProvider'
 import { easeOutExpo } from '../motion'
 import { IconGitHub, IconLinkedIn, IconMail, IconPhone } from './Icons'
 import { Magnetic } from './fx/Magnetic'
-import { ScrollReveal } from './fx/ScrollReveal'
 import { SectionHeading } from './SectionHeading'
 import { Tilt } from './fx/Tilt'
 
@@ -26,8 +25,7 @@ export function Contact() {
           Open to roles in Python, AI tooling, automotive software, and test framework leadership.
         </SectionHeading>
 
-        <ScrollReveal y={40} offset={['start 95%', 'start 80%']}>
-          <motion.div
+        <motion.div
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, amount: 0.15 }}
@@ -71,7 +69,6 @@ export function Contact() {
             </motion.a>
           ))}
           </motion.div>
-        </ScrollReveal>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8">
           <Magnetic>
