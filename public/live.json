@@ -1,13 +1,13 @@
 {
   "name": "Sunilkumar Pathipati",
   "title": "Lead Engineer",
-  "headline": "Python · AI · Test Frameworks · AUTOSAR",
+  "headline": "Python · AI · Forward Deployed Engineering · AUTOSAR",
   "location": "Bengaluru, Karnataka, India",
   "email": "psunil0001@gmail.com",
   "phone": "+91-8686877689",
   "linkedin": "linkedin.com/in/sunilkumar-pathipati-206098bb",
   "github": "github.com/psunil0001-sys",
-  "summary": "Lead Engineer with 9+ years in automotive software, embedded systems, and applied AI. Works in Python and C on AUTOSAR programs, machine-learning workflows, and Agile delivery. Safety-critical experience includes anti-lock braking software for eBikes and two-wheelers in ISO 26262 environments. Currently building Python automation and on-prem LLM tooling for infotainment test, alongside software integration, verification and validation, release management, and engineering productivity.",
+  "summary": "Lead Engineer with 9+ years in automotive software, embedded systems, and applied AI. Works in Python and C on AUTOSAR programs, machine-learning workflows, and Agile delivery. Safety-critical experience includes anti-lock braking software for eBikes and two-wheelers in ISO 26262 environments. Currently building Python automation and on-prem LLM tooling for infotainment test, alongside software integration, verification and validation, release management, and engineering productivity. Pursuing a PG Certificate in Forward Deployed AI Engineering (Futurense × IIT Roorkee).",
   "skill_groups": [
     {
       "label": "Languages",
@@ -158,6 +158,7 @@
     "location": "Andhra Pradesh, India"
   },
   "certifications": [
+    "PG Certificate in Forward Deployed AI Engineering (Futurense × IIT Roorkee) — in progress, expected Oct 2026",
     "Certified Data Scientist",
     "Data Science Foundation",
     "Deep Learning with Keras and TensorFlow"

@@ -3,7 +3,7 @@ export const profile = {
   firstName: 'Sunilkumar',
   lastName: 'Pathipati',
   title: 'Lead Engineer',
-  headline: 'Python · AI · Test Frameworks · AUTOSAR',
+  headline: 'Python · AI · Forward Deployed Engineering · AUTOSAR',
   location: 'Bengaluru, Karnataka, India',
   email: 'psunil0001@gmail.com',
   phone: '+91-8686877689',
@@ -14,14 +14,14 @@ export const profile = {
   /** Total professional projects delivered across all roles (most are private, so not all are listed). */
   projectCount: 9,
   summary:
-    'Lead Engineer with 9+ years in automotive software, embedded systems, and applied AI. Works in Python and C on AUTOSAR programs, machine-learning workflows, and Agile delivery. Safety-critical experience includes anti-lock braking software for eBikes and two-wheelers in ISO 26262 environments. Currently building Python automation and on-prem LLM tooling for infotainment test, alongside software integration, verification and validation, release management, and engineering productivity.',
+    'Lead Engineer with 9+ years in automotive software, embedded systems, and applied AI. Works in Python and C on AUTOSAR programs, machine-learning workflows, and Agile delivery. Safety-critical experience includes anti-lock braking software for eBikes and two-wheelers in ISO 26262 environments. Currently building Python automation and on-prem LLM tooling for infotainment test, alongside software integration, verification and validation, release management, and engineering productivity. Pursuing a PG Certificate in Forward Deployed AI Engineering (Futurense × IIT Roorkee).',
 }
 
 /** Web About copy — same facts as summary, split for reading. */
 export const aboutParagraphs = [
   'Lead Engineer with 9+ years in automotive software, embedded systems, and applied AI. Core tools are Python and C, used on AUTOSAR programs, machine-learning workflows, and Agile teams.',
   'Safety-critical work includes anti-lock braking software for eBikes and two-wheelers, with ISO 26262 functional-safety process exposure.',
-  'Current focus is Python automation and on-prem LLM tooling for infotainment test, plus integration, verification and validation, release management, and engineering productivity.',
+  'Current focus is Python automation and on-prem LLM tooling for infotainment test, plus integration, verification and validation, release management, and engineering productivity. Also pursuing a PG Certificate in Forward Deployed AI Engineering (Futurense × IIT Roorkee).',
 ]
 
 export const skillGroups = [
@@ -151,6 +151,7 @@ export const education = {
 }
 
 export const certifications = [
+  'PG Certificate in Forward Deployed AI Engineering (Futurense × IIT Roorkee) — in progress, expected Oct 2026',
   'Certified Data Scientist',
   'Data Science Foundation',
   'Deep Learning with Keras and TensorFlow',

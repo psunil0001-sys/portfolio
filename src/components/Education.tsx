@@ -12,7 +12,7 @@ export function Education() {
     <section id="education" className="scroll-mt-24 px-5 py-20 sm:px-8 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <SectionHeading index="05 / Foundation" title="Education">
-          ECE degree, then a decade in automotive software and data science certifications.
+          ECE degree, then a decade in automotive software, data science certifications, and an in-progress PG certificate in Forward Deployed AI Engineering.
         </SectionHeading>
 
         <div className="grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
